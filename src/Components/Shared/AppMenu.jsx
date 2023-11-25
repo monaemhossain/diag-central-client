@@ -14,7 +14,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
 import { NavLink } from 'react-router-dom';
 import Slide from '@mui/material/Slide';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
@@ -46,10 +45,6 @@ const userAuthNavItems = [
   {
     name: 'Login',
     path: '/login'
-  },
-  {
-    name: 'Sign Up',
-    path: '/sign-up'
   }
 ]
 
@@ -138,8 +133,7 @@ const AppMenu = (props) => {
       <CssBaseline />
       <HideOnScroll {...props}>
         <AppBar component="nav" sx={{ backgroundColor: 'white', py: 1, }}>
-          <Container maxWidth="xl">
-            <Toolbar>
+            <Toolbar className='px-0'>
               <IconButton
                 color="primary"
                 aria-label="open drawer"
@@ -198,7 +192,6 @@ const AppMenu = (props) => {
                 </Button>
               </Box>
             </Toolbar>
-          </Container>
         </AppBar>
       </HideOnScroll>
       <nav>
