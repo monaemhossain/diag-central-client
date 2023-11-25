@@ -9,9 +9,13 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../AuthProvider/AuthProvider';
+import { updateProfile } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 
 
@@ -21,6 +25,11 @@ const SignUpForm = () => {
     const [blood, setBlood] = useState('')
     const [upazila, setUpazila] = useState('')
     const [district, setDistrict] = useState('')
+    const [password, setPassword] = useState(null)
+    
+    const {signUp} = useContext(AuthContext)
+
+
     const bloodGroupList = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
     const handleChangeBlood = (event) => {
         setBlood(event.target.value);
@@ -59,28 +68,64 @@ const SignUpForm = () => {
         const userAvatar = form.avatar.value;
         const newPassword = form.newPassword.value;
         const confirmPassword = form.confirmPassword.value;
-        const userDetails = {userName, userEmail, userBloodGroup, userDistrict, userUpazila, userAvatar, newPassword, confirmPassword}
-        console.log(userDetails);
+
+        if(newPassword === confirmPassword){
+            setPassword(newPassword)
+        }else{
+            console.log("password doesn't match");
+            return;
+        }
+
+        const userDetails = { userName, userEmail, userBloodGroup, userDistrict, userUpazila, userAvatar, newPassword, confirmPassword }
+        // console.log(userDetails);
+
+        signUp(userEmail, password, userName)
+            .then((newUser) => {
+                updateProfile(newUser.user, {
+                    displayName: userName,
+                    photoURL: userAvatar,
+                })
+                console.log(newUser);
+                toast.success(`Hello ${userName}, Your account is created successfully`)
+            })
+            .catch((error) => {
+                if (error.code == "auth/email-already-in-use") {
+                    
+                    toast.error("Your already have account")
+                } else if (error.code == "auth/invalid-email") {
+                    toast.error("invalid email address")
+                }
+                else {
+                    toast.error("Something went wrong! Please contact with support team.")
+                }
+            })
     }
 
     return (
-        <div className="w-full max-w-md space-y-8 px-4 bg-white text-gray-600 sm:px-0">
-            <div>
-                <img src="https://floatui.com/logo.svg" width={150} className="lg:hidden" />
-                <div className="mt-5 space-y-2">
-                    <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Sign up</h3>
-                    <p className="">Already have an account? <NavLink to='/login' className="font-medium text-defaultText    hover:text-indigo-500 ">Log in</NavLink></p>
-                </div>
+        <div className="w-full max-w-md space-y-8 px-4 bg-white text-gray-600 sm:px-0 pt-4">
+            <div className='flex items-center justify-center text-2xl'>
+                <NavLink to='/login'
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }
+                >Log in</NavLink>
+                <Divider orientation="vertical" flexItem>or</Divider>
+                <NavLink to='/sign-up'
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active text-primary text-2xl font-bold sm:text-3xl" : ""
+                    }
+                >Sign Up</NavLink>
             </div>
-            <div className="grid grid-cols-1">
-                <Button variant="outlined" sx={{ py: 1 }} >
-                    <GoogleIcon className='text-primary' />
+
+            <div>
+                <Button variant='outlined' sx={{ ":hover": { backgroundColor: '#5CF0B0', color: '#111' } }} className="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium hover:bg-gray-50 duration-150 active:bg-gray-100">
+                    <GoogleIcon />
+                    Continue with Google
                 </Button>
             </div>
-            <div className="relative">
-                <span className="block w-full h-px bg-gray-300"></span>
-                <p className="inline-block w-fit text-sm bg-white px-2 absolute -top-2 inset-x-0 mx-auto">Or continue with</p>
-            </div>
+
+            <Divider>Or</Divider>
+
             <form
                 onSubmit={handleSubmit}
                 className="space-y-5"
@@ -214,6 +259,7 @@ const SignUpForm = () => {
                     Create account
                 </Button>
             </form>
+
         </div>
     );
 };

@@ -7,13 +7,16 @@ import { ThemeProvider } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './Components/Theme/Theme.jsx'
 import { HelmetProvider } from 'react-helmet-async'
+import AuthProvider from './Components/AuthProvider/AuthProvider.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <RouterProvider router={Routes} />
+        <AuthProvider>
+          <RouterProvider router={Routes} />
+        </AuthProvider>
       </ThemeProvider>
     </HelmetProvider>
   </React.StrictMode>,

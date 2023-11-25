@@ -1,38 +1,82 @@
 import GoogleIcon from '@mui/icons-material/Google';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import toast from 'react-hot-toast';
+import { useContext } from 'react';
+import { AuthContext } from '../AuthProvider/AuthProvider';
 
 const LoginForm = () => {
+    const {logIn} = useContext(AuthContext)
+    const navigate = useNavigate()
+
+    const handleLogin = (e) => {
+        e.preventDefault()
+        const form = e.target;
+        const userEmail = form.email.value;
+        const userPassword = form.password.value;
+
+        logIn(userEmail, userPassword)
+            .then((result) => {
+                const loggedInUser = result.user;
+                console.log(loggedInUser);
+                toast.success("Login success")
+                navigate(location?.state ? location.state : '/');
+            })
+            .catch((err) => {
+                console.log(err);
+                if (err.code == "auth/network-request-failed") {
+                    toast.error("Network Error. Check you internet connection")
+                    return;
+                }
+                if (err.code == "auth/invalid-login-credentials") {
+                    toast.error("Invalid login credentials try login with Google instead")
+                    return;
+                }
+                toast.error("Email and password does not match")
+            })
+
+    }
     return (
-        <div className="max-w-md w-full text-gray-600 space-y-5">
-            <div className="text-center pb-8">
-                <div className="mt-5">
-                    <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Log in to your account</h3>
-                </div>
+        <div className="max-w-md w-full text-gray-600 space-y-5 pt-4">
+            <div className='flex items-center justify-center text-2xl'>
+                <NavLink to='/login'
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active text-2xl font-bold sm:text-3xl text-primary" : ""
+                    }
+                >Log in</NavLink>
+                <Divider orientation="vertical" flexItem>or</Divider>
+                <NavLink to='/sign-up'
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active text-primary" : ""
+                    }
+                >Sign Up</NavLink>
             </div>
             <form
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={handleLogin}
                 className="space-y-5"
             >
-                <div>
-                    <label className="font-medium">
-                        Email
-                    </label>
-                    <input
-                        type="email"
+                <FormControl fullWidth>
+                    <TextField
+                        label="Your Email Address"
+                        id="email"
+                        size="small"
+                        type='email'
                         required
-                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                     />
-                </div>
-                <div>
-                    <label className="font-medium">
-                        Password
-                    </label>
-                    <input
-                        type="password"
+                </FormControl>
+                <FormControl fullWidth>
+                    <TextField
+                        label="Your Password"
+                        id="password"
+                        size="small"
+                        type='password'
                         required
-                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                     />
-                </div>
+                </FormControl>
+
                 <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-x-3">
                         <input type="checkbox" id="remember-me-checkbox" className="checkbox-item peer hidden" />
@@ -43,19 +87,23 @@ const LoginForm = () => {
                         </label>
                         <span>Remember me</span>
                     </div>
-                    <a href="javascript:void(0)" className="text-center text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                    <a href="#" className="text-center text-indigo-600 hover:text-indigo-500">Forgot password?</a>
                 </div>
-                <button
+                <Button
+                    type='submit'
+                    variant='outlined'
+                    sx={{ ":hover": { color: '#111' }, backgroundColor: '#5094ED', color: '#fff' }}
                     className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150 hover:bg-secondary border"
                 >
                     Sign in
-                </button>
+                </Button>
             </form>
-            <button className="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium hover:bg-gray-50 duration-150 active:bg-gray-100">
+            <Divider>Or</Divider>
+            <Button variant='outlined' sx={{ ":hover": { backgroundColor: '#5CF0B0', color: '#111' } }} className="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium hover:bg-gray-50 duration-150 active:bg-gray-100">
                 <GoogleIcon />
                 Continue with Google
-            </button>
-            <p className="text-center">Don&#39;t have an account? <NavLink to="/sign-up" className="font-medium text-indigo-600 hover:text-indigo-500">Sign up</NavLink></p>
+            </Button>
+
         </div>
     );
 };
