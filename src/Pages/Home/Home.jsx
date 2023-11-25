@@ -1,7 +1,12 @@
+import Hero from "../../Components/Hero/Hero";
+import AppMenu from "../../Components/Shared/AppMenu";
+
 const Home = () => {
     return (
         <div>
-            home coming
+            <AppMenu /> 
+            <Hero />
+            <div className="h-[2000px]"></div>           
         </div>
     );
 };
