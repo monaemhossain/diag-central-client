@@ -1,9 +1,13 @@
-import Home from "../Pages/Home/Home";
+import { Outlet } from "react-router-dom";
+import AppMenu from "../Components/Shared/AppMenu";
+import Footer from "../Components/Shared/Footer";
 
 const Root = () => {
     return (
         <div>
-            <Home />
+            <AppMenu />
+            <Outlet />
+            <Footer />
         </div>
     );
 };

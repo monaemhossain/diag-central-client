@@ -1,12 +1,16 @@
+import { Helmet } from "react-helmet-async";
 import Hero from "../../Components/Hero/Hero";
-import AppMenu from "../../Components/Shared/AppMenu";
 
 const Home = () => {
     return (
-        <div>
-            <AppMenu /> 
+        <div>            
+            <Helmet>
+                <title>DiagCentral | Home</title>
+            </Helmet>
+ 
             <Hero />
-            <div className="h-[2000px]"></div>           
+
+            <div className="h-[100svh]"></div>           
         </div>
     );
 };
