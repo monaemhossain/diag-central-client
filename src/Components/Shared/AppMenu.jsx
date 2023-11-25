@@ -24,7 +24,7 @@ const drawerWidth = 240;
 const navItems = [
   {
     name: 'Home',
-    path: '/home'
+    path: '/'
   },
   {
     name: 'Contact',
@@ -46,6 +46,10 @@ const userAuthNavItems = [
   {
     name: 'Login',
     path: '/login'
+  },
+  {
+    name: 'Sign Up',
+    path: '/sign-up'
   }
 ]
 

@@ -1,7 +1,14 @@
+import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
+
 const Hero = () => {
     
       return (
           <div className="bg-gray-900">
+
+            <Helmet>
+                <title>DiagCentral | Home</title>
+            </Helmet>
               
               <section className="mx-auto max-w-screen-xl py-12 px-4 items-center lg:flex md:px-8">
                   <div className="space-y-4 flex-1 sm:text-center lg:text-left">
@@ -13,12 +20,12 @@ const Hero = () => {
                           It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum
                       </p>
                       <div className="pt-10 items-center justify-center space-y-3 sm:space-x-6 sm:space-y-0 sm:flex lg:justify-start">
-                          <a href="javascript:void(0)" className="px-7 py-3 w-full bg-white text-gray-800 text-center rounded-md shadow-md block sm:w-auto">
+                          <Link to="/all-tests" className="px-7 py-3 w-full bg-white text-gray-800 text-center rounded-md shadow-md block sm:w-auto">
                               Get started
-                          </a>
-                          <a href="javascript:void(0)" className="px-7 py-3 w-full bg-gray-700 text-gray-200 text-center rounded-md block sm:w-auto">
+                          </Link>
+                          {/* <Link to="#" className="px-7 py-3 w-full bg-gray-700 text-gray-200 text-center rounded-md block sm:w-auto">
                               Try it out
-                          </a>
+                          </Link> */}
                       </div>
                   </div>
                   <div className="flex-1 text-center mt-7 lg:mt-0 lg:ml-3">
