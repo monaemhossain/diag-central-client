@@ -1,4 +1,3 @@
-import * as React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,6 +17,8 @@ import { NavLink } from 'react-router-dom';
 import Slide from '@mui/material/Slide';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Avatar from '@mui/material/Avatar';
+import { AuthContext } from '../AuthProvider/AuthProvider';
+import { useContext, useState } from 'react';
 
 const drawerWidth = 240;
 const navItems = [
@@ -26,18 +27,23 @@ const navItems = [
     path: '/'
   },
   {
-    name: 'Contact',
-    path: '/contact'
+    name: 'Explore Tests',
+    path: '/all-tests'
   },
   {
     name: 'About',
     path: '/about'
-  }
+  },
+  {
+    name: 'Contact',
+    path: '/contact'
+  },
 ];
+
 const privateNavItems = [
   {
     name: 'Dashboard',
-    path: '/dashboard'
+    path: '/admin-dashboard'
   }
 ];
 
@@ -49,8 +55,20 @@ const userAuthNavItems = [
 ]
 
 const AppMenu = (props) => {
+  // user
+  const { user, logOut } = useContext(AuthContext)
+
+
+
+
+
+
+
+
+  // Appbar scripts
+
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -127,71 +145,81 @@ const AppMenu = (props) => {
     );
   }
 
+  const handleLogOut = () => {
+    logOut()
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+  }
+
 
   return (
     <Box sx={{ display: 'flex', mb: 10 }}>
       <CssBaseline />
       <HideOnScroll {...props}>
         <AppBar component="nav" sx={{ backgroundColor: 'white', py: 1, }}>
-            <Toolbar className='px-0'>
-              <IconButton
-                color="primary"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: 'none' } }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-              >
-                <img className='h-14' src="logo.png" alt="Diag Central Logo" />
-              </Typography>
-              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                {navItems.map((item, index) => (
-                  <Button key={index} sx={{ fontWeight: 'bold' }}>
-                    <NavLink
-                      to={item.path}
-                      className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                      }
-                    >
-                      {item.name}
-                    </NavLink>
-                  </Button>
-                ))}
-                {userAuthNavItems.map((item, index) => (
-                  <Button key={index} sx={{ fontWeight: 'bold' }}>
-                    <NavLink
-                      to={item.path}
-                      className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                      }
-                    >
-                      {item.name}
-                    </NavLink>
-                  </Button>
-                ))}
-                {privateNavItems.map((item, index) => (
-                  <Button key={index} sx={{ fontWeight: 'bold' }}>
-                    <NavLink
-                      to={item.path}
-                      className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                      }
-                    >
-                      {item.name}
-                    </NavLink>
-                  </Button>
-                ))}
-                <Button>
-                  <Avatar />
+          <Toolbar className='px-0'>
+            <IconButton
+              color="primary"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            >
+              <img className='h-14' src="logo.png" alt="Diag Central Logo" />
+            </Typography>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              {navItems.map((item, index) => (
+                <Button key={index} sx={{ fontWeight: 'bold' }}>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive, isPending }) =>
+                      isPending ? "pending" : isActive ? "active text-white" : ""
+                    }
+                  >
+                    {item.name}
+                  </NavLink>
                 </Button>
-              </Box>
-            </Toolbar>
+              ))}
+              {!user ? userAuthNavItems.map((item, index) => (
+                <Button key={index} sx={{ fontWeight: 'bold' }}>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive, isPending }) =>
+                      isPending ? "pending" : isActive ? "active" : ""
+                    }
+                  >
+                    {item.name}
+                  </NavLink>
+                </Button>
+              )) : ''}
+              {user ? privateNavItems.map((item, index) => (
+                <Button key={index} sx={{ fontWeight: 'bold' }}>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive, isPending }) =>
+                      isPending ? "pending" : isActive ? "active" : ""
+                    }
+                  >
+                    {item.name}
+                  </NavLink>
+                </Button>
+              )) : ''}
+              {user ? <Button
+                onClick={handleLogOut}
+                sx={{ fontWeight: 'bold', color: 'red' }}
+                className='absolute'
+              >
+                Log out
+              </Button> : ''}
+            </Box>
+          </Toolbar>
         </AppBar>
       </HideOnScroll>
       <nav>
@@ -213,6 +241,8 @@ const AppMenu = (props) => {
       </nav>
     </Box >
   );
+
+
 }
 
 AppMenu.propTypes = {

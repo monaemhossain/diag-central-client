@@ -75,9 +75,9 @@ const SignUpForm = () => {
             console.log("password doesn't match");
             return;
         }
-
+        // TODO: send user data to the server
         const userDetails = { userName, userEmail, userBloodGroup, userDistrict, userUpazila, userAvatar, newPassword, confirmPassword }
-        // console.log(userDetails);
+        console.log(userDetails);
 
         signUp(userEmail, password, userName)
             .then((newUser) => {

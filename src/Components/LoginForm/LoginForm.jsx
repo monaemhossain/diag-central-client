@@ -1,5 +1,5 @@
 import GoogleIcon from '@mui/icons-material/Google';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -11,6 +11,7 @@ import { AuthContext } from '../AuthProvider/AuthProvider';
 const LoginForm = () => {
     const {logIn} = useContext(AuthContext)
     const navigate = useNavigate()
+    const location = useLocation()
 
     const handleLogin = (e) => {
         e.preventDefault()
