@@ -1,4 +1,3 @@
-import GoogleIcon from '@mui/icons-material/Google';
 import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -159,15 +158,6 @@ const SignUpForm = () => {
                     }
                 >Sign Up</NavLink>
             </div>
-
-            <div>
-                <Button variant='outlined' sx={{ ":hover": { backgroundColor: '#5CF0B0', color: '#111' } }} className="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium hover:bg-gray-50 duration-150 active:bg-gray-100">
-                    <GoogleIcon />
-                    Continue with Google
-                </Button>
-            </div>
-
-            <Divider>Or</Divider>
 
             <form
                 onSubmit={handleSubmit}

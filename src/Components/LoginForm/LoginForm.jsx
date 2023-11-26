@@ -1,4 +1,3 @@
-import GoogleIcon from '@mui/icons-material/Google';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -9,10 +8,10 @@ import { useContext } from 'react';
 import { AuthContext } from '../AuthProvider/AuthProvider';
 
 const LoginForm = () => {
-    const {logIn} = useContext(AuthContext)
+    const { logIn } = useContext(AuthContext)
     const navigate = useNavigate()
     const location = useLocation()
-
+    // log in with email and password
     const handleLogin = (e) => {
         e.preventDefault()
         const form = e.target;
@@ -36,8 +35,8 @@ const LoginForm = () => {
                 }
                 toast.error("Email and password does not match")
             })
-
     }
+
     return (
         <div className="max-w-md w-full text-gray-600 space-y-5 pt-4">
             <div className='flex items-center justify-center text-2xl'>
@@ -97,12 +96,6 @@ const LoginForm = () => {
                     Sign in
                 </Button>
             </form>
-            <Divider>Or</Divider>
-            <Button variant='outlined' sx={{ ":hover": { backgroundColor: '#5CF0B0', color: '#111' } }} className="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium hover:bg-gray-50 duration-150 active:bg-gray-100">
-                <GoogleIcon />
-                Continue with Google
-            </Button>
-
         </div>
     );
 };

@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import Hero from "../../Components/Hero/Hero";
-import MyForm from "../../Components/SignUpForm/upload";
 
 const Home = () => {
     return (
@@ -10,7 +9,7 @@ const Home = () => {
             </Helmet>
  
             <Hero />
-            <MyForm></MyForm>
+            
             <div className="h-[100svh]"></div>           
         </div>
     );
