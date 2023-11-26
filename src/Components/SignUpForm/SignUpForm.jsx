@@ -7,7 +7,6 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -16,7 +15,7 @@ import axios from 'axios';
 import { AuthContext } from '../AuthProvider/AuthProvider';
 import { updateProfile } from 'firebase/auth';
 import toast from 'react-hot-toast';
-
+import './SignUpForm.css'
 
 
 const SignUpForm = () => {
@@ -53,9 +52,15 @@ const SignUpForm = () => {
 
     }, [])
 
+    const [userImage, setUserImage] = useState(null);
 
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        // console.log(file);
+        setUserImage(file);
+    };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         // console.log(e.target);
         const form = e.target;
@@ -64,7 +69,6 @@ const SignUpForm = () => {
         const userBloodGroup = blood;
         const userDistrict = upazila;
         const userUpazila = district;
-        const userAvatar = form.avatar.value;
         const newPassword = form.newPassword.value;
         const confirmPassword = form.confirmPassword.value;
         const activeStatus = true;
@@ -75,38 +79,69 @@ const SignUpForm = () => {
         }
 
         // console.log(userDetails);
+        // upload img to cloud
+        if (!userImage) {
+            console.error('No image selected');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', userImage);
+        axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then(res => {
+                // Check if the upload was successful
+                if (res.data.status === 200) {
+                    const imageUrl = res.data.data.url;
+                    console.log('Image uploaded successfully:', imageUrl);
+
+                    signUp(userEmail, newPassword, userName)
+                        .then((newUser) => {
+                            updateProfile(newUser.user, {
+                                displayName: userName,
+                                photoURL: imageUrl,
+                            })
+                            const userDetails = { userName, userEmail, userBloodGroup, userDistrict, userUpazila, imageUrl, activeStatus }
+                            console.log(newUser);
+                            // post user details to the server
+                            axios.post('http://localhost:4000/users', userDetails)
+                                .then((res) => {
+                                    console.log(res.data)
+                                    if (res.data.insertedId) {
+                                        toast.success('Account created successfully')
+                                    }
+                                })
+
+                        })
+                        .catch((error) => {
+                            if (error.code == "auth/email-already-in-use") {
+                                toast.error("Your already have account")
+                            } else if (error.code == "auth/invalid-email") {
+                                toast.error("invalid email address")
+                            }
+                            else {
+                                toast.error("Something went wrong! Please contact with support team.")
+                            }
+                        })
 
 
-
-        signUp(userEmail, newPassword, userName)
-            .then((newUser) => {
-                updateProfile(newUser.user, {
-                    displayName: userName,
-                    photoURL: userAvatar,
-                })
-                // TODO: send user data to the server
-                const userDetails = { userName, userEmail, userBloodGroup, userDistrict, userUpazila, userAvatar, activeStatus }
-                console.log(newUser);
-                // post user details to the server
-                axios.post('http://localhost:4000/users', userDetails)
-                    .then((res) => {
-                        console.log(res.data)
-                        if (res.data.insertedId) {
-                            toast.success('Account created successfully')
-                        }
-                    })
+                } else {
+                    console.error('Error uploading image:', res.data.error.message);
+                    toast.error('Profile photo upload failed');
+                }
 
             })
-            .catch((error) => {
-                if (error.code == "auth/email-already-in-use") {
-                    toast.error("Your already have account")
-                } else if (error.code == "auth/invalid-email") {
-                    toast.error("invalid email address")
-                }
-                else {
-                    toast.error("Something went wrong! Please contact with support team.")
-                }
+            .catch(error => {
+                console.error('Error uploading image:', error.message);
+                toast.error("Profile photo upload failed")
+                return;
             })
+
+
+
     }
 
     return (
@@ -159,7 +194,7 @@ const SignUpForm = () => {
 
                 <Box>
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center' }}>
                             <FormControl fullWidth size="small">
                                 <InputLabel id="bloodGroup">Blood Group</InputLabel>
                                 <Select
@@ -181,10 +216,14 @@ const SignUpForm = () => {
 
 
                         <Grid item xs={6}>
-                            <Button fullWidth component="label" variant="contained" startIcon={<CloudUploadIcon />} sx={{ py: '7px' }}>
-                                Upload Avatar
-                                <VisuallyHiddenInput id='avatar' type="file" required />
-                            </Button>
+                            <FormControl>
+                                <TextField
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    InputProps={{ endAdornment: <CloudUploadIcon /> }}
+                                />
+                            </FormControl>
                         </Grid>
                     </Grid>
                 </Box>
@@ -271,15 +310,4 @@ const SignUpForm = () => {
         </div>
     );
 };
-const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-});
 export default SignUpForm;
