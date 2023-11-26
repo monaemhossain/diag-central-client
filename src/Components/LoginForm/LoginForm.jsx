@@ -20,9 +20,7 @@ const LoginForm = () => {
         const userPassword = form.password.value;
 
         logIn(userEmail, userPassword)
-            .then((result) => {
-                const loggedInUser = result.user;
-                console.log(loggedInUser);
+            .then(() => {
                 toast.success("Login success")
                 navigate(location?.state ? location.state : '/');
             })
@@ -94,7 +92,7 @@ const LoginForm = () => {
                     type='submit'
                     variant='outlined'
                     sx={{ ":hover": { color: '#111' }, backgroundColor: '#5094ED', color: '#fff' }}
-                    className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150 hover:bg-secondary border"
+                    className="w-full px-4 py-2 text-white font-medium bg-indigo-600 active:bg-indigo-600 rounded-lg duration-150 hover:bg-secondary border"
                 >
                     Sign in
                 </Button>

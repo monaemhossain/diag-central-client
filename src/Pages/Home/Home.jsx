@@ -9,7 +9,7 @@ const Home = () => {
             </Helmet>
  
             <Hero />
-
+        
             <div className="h-[100svh]"></div>           
         </div>
     );

@@ -6,9 +6,6 @@ import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -16,11 +13,10 @@ import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
 import Slide from '@mui/material/Slide';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Avatar from '@mui/material/Avatar';
 import { AuthContext } from '../AuthProvider/AuthProvider';
 import { useContext, useState } from 'react';
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 const navItems = [
   {
     name: 'Home',
@@ -40,29 +36,16 @@ const navItems = [
   },
 ];
 
-const privateNavItems = [
-  {
-    name: 'Dashboard',
-    path: '/admin-dashboard'
-  }
-];
-
-const userAuthNavItems = [
-  {
-    name: 'Login',
-    path: '/login'
-  }
-]
-
 const AppMenu = (props) => {
   // user
   const { user, logOut } = useContext(AuthContext)
 
 
-
-
-
-
+  const handleLogOut = () => {
+    logOut()
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
 
 
   // Appbar scripts
@@ -73,57 +56,79 @@ const AppMenu = (props) => {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+  const appLogo = (<img className='h-14' src="logo.png" alt="Diag Central Logo" />)
+  const appBarMenu = (
+    <List sx={{display:{md:'flex'}, gap: 3, alignItems: 'center'}}>
+      {
+        navItems.map((item, index) => (
+          <li key={index}>
+            <NavLink
+              key={index}
+              to={item.path}
+              className={({ isActive, isPending }) =>
+                isPending ? "pending" : isActive ? "active text-defaultText" : ""
+              }
+            >
+              {item.name}
+            </NavLink>
+          </li>
+        ))
+      }
+
+      {
+        !user ?
+          <li>
+            <NavLink
+              to='/login'
+              className={({ isActive, isPending }) =>
+                isPending ? "pending" : isActive ? "active text-defaultText" : ""
+              }
+            >
+              Login
+            </NavLink>
+          </li>
+          : ''
+      }
+
+      {
+        user ?
+          <li>
+            <NavLink
+              to='/admin-dashboard'
+              className={({ isActive, isPending }) =>
+                isPending ? "pending" : isActive ? "active text-defaultText" : ""}
+            >
+              Dashboard
+            </NavLink>
+          </li>
+          : ''
+      }
+
+      {
+        user ? <Button
+          variant='outlined'
+          color={'error'}
+          onClick={handleLogOut}
+          sx={{ fontWeight: 'bold', color: 'red' }}
+          className='absolute'
+        >
+          Log out
+        </Button> : ''
+      }
+    </List >
+  )
+
+
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        <img className='h-14' src="logo.png" alt="Diag Central Logo" />
+        {appLogo}
       </Typography>
       <Divider />
-      <List>
-        {navItems.map((item, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-              <NavLink
-                to={item.path}
-                className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : ""
-                }
-              >
-                <ListItemText primary={item.name} />
-              </NavLink>
-            </ListItemButton>
-          </ListItem>
-        ))}
-        {privateNavItems.map((item, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-              <NavLink
-                to={item.path}
-                className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : ""
-                }
-              >
-                <ListItemText primary={item.name} />
-              </NavLink>
-            </ListItemButton>
-          </ListItem>
-        ))}
-        {userAuthNavItems.map((item, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-              <NavLink
-                to={item.path}
-                className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : ""
-                }
-              >
-                <ListItemText primary={item.name} />
-              </NavLink>
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <div>
+        {appBarMenu}
+      </div>
     </Box>
   );
 
@@ -145,12 +150,6 @@ const AppMenu = (props) => {
     );
   }
 
-  const handleLogOut = () => {
-    logOut()
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-  }
-
 
   return (
     <Box sx={{ display: 'flex', mb: 10 }}>
@@ -163,61 +162,21 @@ const AppMenu = (props) => {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: 'none' } }}
+              sx={{ mr: 2, display: { md: 'none' } }}
             >
               <MenuIcon />
             </IconButton>
             <Typography
               variant="h6"
               component="div"
-              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              sx={{ flexGrow: 1, display: { md: 'block', xs: 'none' } }}
             >
-              <img className='h-14' src="logo.png" alt="Diag Central Logo" />
+              {appLogo}
             </Typography>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {navItems.map((item, index) => (
-                <Button key={index} sx={{ fontWeight: 'bold' }}>
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive, isPending }) =>
-                      isPending ? "pending" : isActive ? "active text-white" : ""
-                    }
-                  >
-                    {item.name}
-                  </NavLink>
-                </Button>
-              ))}
-              {!user ? userAuthNavItems.map((item, index) => (
-                <Button key={index} sx={{ fontWeight: 'bold' }}>
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive, isPending }) =>
-                      isPending ? "pending" : isActive ? "active" : ""
-                    }
-                  >
-                    {item.name}
-                  </NavLink>
-                </Button>
-              )) : ''}
-              {user ? privateNavItems.map((item, index) => (
-                <Button key={index} sx={{ fontWeight: 'bold' }}>
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive, isPending }) =>
-                      isPending ? "pending" : isActive ? "active" : ""
-                    }
-                  >
-                    {item.name}
-                  </NavLink>
-                </Button>
-              )) : ''}
-              {user ? <Button
-                onClick={handleLogOut}
-                sx={{ fontWeight: 'bold', color: 'red' }}
-                className='absolute'
-              >
-                Log out
-              </Button> : ''}
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+              <div className='flex gap-4 items-center justify-center font-bold text-primary opacity-90'>
+                {appBarMenu}
+              </div>
             </Box>
           </Toolbar>
         </AppBar>
@@ -232,7 +191,7 @@ const AppMenu = (props) => {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
+            display: { xs: 'block', md: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
         >

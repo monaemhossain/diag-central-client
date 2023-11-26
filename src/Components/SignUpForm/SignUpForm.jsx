@@ -25,9 +25,8 @@ const SignUpForm = () => {
     const [blood, setBlood] = useState('')
     const [upazila, setUpazila] = useState('')
     const [district, setDistrict] = useState('')
-    const [password, setPassword] = useState(null)
-    
-    const {signUp} = useContext(AuthContext)
+
+    const { signUp } = useContext(AuthContext)
 
 
     const bloodGroupList = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
@@ -68,29 +67,38 @@ const SignUpForm = () => {
         const userAvatar = form.avatar.value;
         const newPassword = form.newPassword.value;
         const confirmPassword = form.confirmPassword.value;
+        const activeStatus = true;
 
-        if(newPassword === confirmPassword){
-            setPassword(newPassword)
-        }else{
-            console.log("password doesn't match");
+        if (newPassword !== confirmPassword) {
+            toast.error("password doesn't match");
             return;
         }
-        // TODO: send user data to the server
-        const userDetails = { userName, userEmail, userBloodGroup, userDistrict, userUpazila, userAvatar, newPassword, confirmPassword }
-        console.log(userDetails);
 
-        signUp(userEmail, password, userName)
+        // console.log(userDetails);
+
+
+
+        signUp(userEmail, newPassword, userName)
             .then((newUser) => {
                 updateProfile(newUser.user, {
                     displayName: userName,
                     photoURL: userAvatar,
                 })
+                // TODO: send user data to the server
+                const userDetails = { userName, userEmail, userBloodGroup, userDistrict, userUpazila, userAvatar, activeStatus }
                 console.log(newUser);
-                toast.success(`Hello ${userName}, Your account is created successfully`)
+                // post user details to the server
+                axios.post('http://localhost:4000/users', userDetails)
+                    .then((res) => {
+                        console.log(res.data)
+                        if (res.data.insertedId) {
+                            toast.success('Account created successfully')
+                        }
+                    })
+
             })
             .catch((error) => {
                 if (error.code == "auth/email-already-in-use") {
-                    
                     toast.error("Your already have account")
                 } else if (error.code == "auth/invalid-email") {
                     toast.error("invalid email address")
