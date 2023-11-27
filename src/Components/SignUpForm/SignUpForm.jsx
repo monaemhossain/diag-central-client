@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -24,8 +24,8 @@ const SignUpForm = () => {
     const [upazila, setUpazila] = useState('')
     const [district, setDistrict] = useState('')
 
-    const { signUp } = useContext(AuthContext)
-
+    const { signUp, user, dbUsers } = useContext(AuthContext)
+    const navigate = useNavigate();
 
     const bloodGroupList = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
     const handleChangeBlood = (event) => {
@@ -59,6 +59,18 @@ const SignUpForm = () => {
         setUserImage(file);
     };
 
+    // redirect user based on there role
+    const [isRole, setIsRole] = useState('')
+
+    if(user){
+        const {email} = user;
+        const currentUser = dbUsers.filter(user => email == user.userEmail)
+        const { role } = currentUser[0];
+        setIsRole(role)
+    }
+    
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         // console.log(e.target);
@@ -71,9 +83,22 @@ const SignUpForm = () => {
         const newPassword = form.newPassword.value;
         const confirmPassword = form.confirmPassword.value;
         const activeStatus = true;
+        const role = "user";
 
         if (newPassword !== confirmPassword) {
             toast.error("password doesn't match");
+            return;
+        }
+        else if (newPassword.length < 6) {
+            toast.error("Password should be at least 6 characters")
+            return;
+        }
+        else if (!/[A-Z]/.test(newPassword)) {
+            toast.error("Password must have at least one uppercase letter")
+            return;
+        }
+        else if (!/[a-z]/.test(newPassword)) {
+            toast.error("Password must have at least one lowercase letter")
             return;
         }
 
@@ -98,23 +123,30 @@ const SignUpForm = () => {
                     console.log('Image uploaded successfully:', imageUrl);
 
                     signUp(userEmail, newPassword, userName)
-                        .then((newUser) => {
+                    .then((newUser) => {
                             updateProfile(newUser.user, {
                                 displayName: userName,
                                 photoURL: imageUrl,
                             })
-                            const userDetails = { userName, userEmail, userBloodGroup, userDistrict, userUpazila, imageUrl, activeStatus }
+                            const userDetails = { userName, userEmail, userBloodGroup, userDistrict, userUpazila, imageUrl, activeStatus, role }
                             console.log(newUser);
                             // post user details to the server
                             axios.post('http://localhost:4000/users', userDetails)
-                                .then((res) => {
-                                    console.log(res.data)
-                                    if (res.data.insertedId) {
-                                        toast.success('Account created successfully')
-                                    }
-                                })
-
+                            .then((res) => {
+                                console.log(res.data)
+                                if (res.data.insertedId) {
+                                    toast.success('Account created successfully')
+                                }
+                            }).catch(err => console.log(err))
+                            
+                            if(isRole === 'admin'){
+                                navigate('/admin-dashboard')
+                            }else if(isRole === 'user'){
+                                navigate('/user-dashboard')
+                            }
+                            // navigate(`${isRole === 'admin' ? '/admin-dashboard' : '/user-dashboard'}`);
                         })
+
                         .catch((error) => {
                             if (error.code == "auth/email-already-in-use") {
                                 toast.error("Your already have account")

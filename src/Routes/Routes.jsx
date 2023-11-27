@@ -8,6 +8,7 @@ import AccessedRoute from "../Components/PrivateRoute/AccessedRoute";
 import PrivateRoute from "../Components/PrivateRoute/PrivateRoute";
 import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
 import UserDashboard from "../Pages/Dashboard/UserDashboard";
+import Profile from "../Components/Profile/Profile";
 
 const Routes = createBrowserRouter([
   {
@@ -20,20 +21,24 @@ const Routes = createBrowserRouter([
         element: <Home />
       },
       {
-        path: 'login',
+        path: '/login',
         element: <AccessedRoute> <LoginPage /> </AccessedRoute>
       },
       {
-        path: 'sign-up',
+        path: '/sign-up',
         element: <AccessedRoute><SignUpPage /></AccessedRoute>
       },
       {
-        path: 'admin-dashboard',
+        path: '/admin-dashboard',
         element: <PrivateRoute><AdminDashboard /></PrivateRoute>
       },
       {
-        path: 'user-dashboard',
+        path: '/user-dashboard',
         element: <PrivateRoute><UserDashboard /></PrivateRoute>
+      },
+      {
+        path: '/profile',
+        element: <PrivateRoute><Profile></Profile></PrivateRoute>
       }
     ]
   },

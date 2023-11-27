@@ -9,12 +9,12 @@ import List from '@mui/material/List';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
 import Slide from '@mui/material/Slide';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { AuthContext } from '../AuthProvider/AuthProvider';
 import { useContext, useState } from 'react';
+import DropDown from './DropDown';
 
 const drawerWidth = 280;
 const navItems = [
@@ -38,15 +38,9 @@ const navItems = [
 
 const AppMenu = (props) => {
   // user
-  const { user, logOut } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
 
-
-  const handleLogOut = () => {
-    logOut()
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
-  }
-
+// console.log(user);
 
   // Appbar scripts
 
@@ -87,34 +81,9 @@ const AppMenu = (props) => {
               Login
             </NavLink>
           </li>
-          : ''
-      }
-
-      {
-        user ?
-          <li>
-            <NavLink
-              to='/admin-dashboard'
-              className={({ isActive, isPending }) =>
-                isPending ? "pending" : isActive ? "active text-defaultText" : ""}
-            >
-              Dashboard
-            </NavLink>
-          </li>
-          : ''
-      }
-
-      {
-        user ? <Button
-          variant='outlined'
-          color={'error'}
-          onClick={handleLogOut}
-          sx={{ fontWeight: 'bold', color: 'red' }}
-          className='absolute'
-        >
-          Log out
-        </Button> : ''
-      }
+          : <DropDown />
+      }          
+      
     </List >
   )
 

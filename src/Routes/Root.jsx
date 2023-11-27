@@ -9,11 +9,16 @@ const Root = () => {
     return (
         <div>
             <Toaster
-                position="bottom-center"
+                position="top-center"
                 reverseOrder={false}
+                containerClassName="mt-20 rounded-full"
+                
+                toastOptions={{
+                    duration: 5000,
+                }}
             />
             <AppMenu />
-            <Box className="min-h-[calc(100vh-370px)]">
+            <Box className="min-h-[calc(100vh-152px)]">
                 <Outlet />
 
             </Box>

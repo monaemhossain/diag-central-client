@@ -1,16 +1,20 @@
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import toast from 'react-hot-toast';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../AuthProvider/AuthProvider';
 
 const LoginForm = () => {
-    const { logIn } = useContext(AuthContext)
-    const navigate = useNavigate()
-    const location = useLocation()
+    const { logIn, user, dbUsers } = useContext(AuthContext)
+    const navigate = useNavigate();
+    const [isRole, setIsRole] = useState('')
+
+    // navigate to user or admin dashboard
+
+
     // log in with email and password
     const handleLogin = (e) => {
         e.preventDefault()
@@ -21,7 +25,21 @@ const LoginForm = () => {
         logIn(userEmail, userPassword)
             .then(() => {
                 toast.success("Login success")
-                navigate(location?.state ? location.state : '/');
+                const currentUser = dbUsers.filter(user => userEmail == user.userEmail)
+                const { role } = currentUser[0];
+                setIsRole(role)
+                console.log(role);
+                console.log(currentUser);
+
+               if(isRole === 'admin'){
+                    navigate('/admin-dashboard');                    
+                }else if(isRole === 'user'){                    
+                    navigate('/user-dashboard');
+                }
+            
+            navigate(location?.state ? location.state : '/');
+
+            
             })
             .catch((err) => {
                 console.log(err);
@@ -35,6 +53,7 @@ const LoginForm = () => {
                 }
                 toast.error("Email and password does not match")
             })
+        console.log(isRole);
     }
 
     return (
@@ -63,6 +82,7 @@ const LoginForm = () => {
                         size="small"
                         type='email'
                         required
+                        defaultValue='user2@user.com'
                     />
                 </FormControl>
                 <FormControl fullWidth>
@@ -72,6 +92,7 @@ const LoginForm = () => {
                         size="small"
                         type='password'
                         required
+                        defaultValue='User123'
                     />
                 </FormControl>
 

@@ -2,8 +2,7 @@ import { useContext } from "react";
 import PropTypes from 'prop-types';
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import { Navigate, useLocation } from "react-router-dom";
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
+import { InfinitySpin } from "react-loader-spinner";
 
 const PrivateRoute = ({ children }) => {
     const { user, isLoading } = useContext(AuthContext)
@@ -11,17 +10,21 @@ const PrivateRoute = ({ children }) => {
 
     if (isLoading) {
         return (
-            <Box sx={{ display: 'flex' }} className="min-h-[calc(100vh-405px)] items-center justify-center">
-                <CircularProgress />
-            </Box>
+            <div className="flex min-h-[calc(100vh-105px)] items-center justify-center">
+                <InfinitySpin
+                    width='200'
+                    color="#5CF0B0"
+                />
+            </div>
         )
     }
 
     if (user) {
         return children;
+    } else {
+        return <Navigate state={location.pathname} to="/login"></Navigate>;
     }
 
-    return <Navigate state={location.pathname} to="/login"></Navigate>;
 };
 PrivateRoute.propTypes = {
     children: PropTypes.node

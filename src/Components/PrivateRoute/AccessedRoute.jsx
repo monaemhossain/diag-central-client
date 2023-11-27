@@ -3,7 +3,7 @@ import { AuthContext } from "../AuthProvider/AuthProvider";
 import { Navigate, useLocation } from "react-router-dom";
 import PropTypes from 'prop-types';
 
-const AccessedRoute = ({ children }) => {
+const AccessedRoute = ({children}) => {
     const { user } = useContext(AuthContext)
     const location = useLocation()
 

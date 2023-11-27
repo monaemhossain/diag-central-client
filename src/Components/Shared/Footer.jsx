@@ -39,7 +39,7 @@ const Footer = () => {
     return (
         <div className='relative z-10'>
             <footer className='bg-white'>
-                <Container maxWidth="xl">
+                {/* <Container maxWidth="xl">
                     <div>
                         <div className="max-w-3xl sm:mx-auto sm:text-center">
                             <img src="logo.png" className="w-48 sm:mx-auto" />
@@ -59,7 +59,7 @@ const Footer = () => {
                             }
                         </ul>
                     </div>
-                </Container>
+                </Container> */}
 
                 <Paper className='py-4'>
                     <Container maxWidth='xl'>

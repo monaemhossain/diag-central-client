@@ -2,11 +2,12 @@ import { createContext, useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
+import axios from "axios";
 
 
 export const AuthContext = createContext(null)
 
-const AuthProvider = ({children}) => {
+const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [user, setUser] = useState(null)
 
@@ -20,7 +21,7 @@ const AuthProvider = ({children}) => {
         setIsLoading(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
-    
+
     const logOut = () => {
         setIsLoading(true)
         return signOut(auth)
@@ -40,12 +41,23 @@ const AuthProvider = ({children}) => {
 
     }, [])
 
+    const [dbUsers, setDbUsers] = useState(null)
+    useEffect(() => {
+        const userDatabase = () => {
+            setIsLoading(true);
+            axios.get('http://localhost:4000/users')
+                .then(res => setDbUsers(res.data))
+        }
+        return userDatabase;
+    }, [])
+    
     const AuthInfo = {
         signUp,
         logIn,
         logOut,
         user,
         isLoading,
+        dbUsers,
     }
     return (
         <AuthContext.Provider value={AuthInfo}>
