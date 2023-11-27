@@ -1,9 +1,5 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import {  useState } from "react";
 import PropTypes from 'prop-types';
-import PersonIcon from '@mui/icons-material/Person';
-import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
-import BiotechIcon from '@mui/icons-material/Biotech';
-import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import * as Tabs from "@radix-ui/react-tabs";
 import '@radix-ui/themes/styles.css';
 
@@ -85,7 +81,7 @@ const UserDashboard = () => {
         <>
             <Tabs.Root
                 className="px-4 pt-7 md:px-8 sm:flex"
-                value={selectedTab}
+                defaultValue='My Profile'
                 onValueChange={(val) => setSelectedTab(val)}
                 orientation="vertical"
             >
@@ -96,10 +92,10 @@ const UserDashboard = () => {
                     {tabItems.map((item, idx) => (
                         <Tabs.Trigger
                             key={idx}
-                            className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600"
+                            className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-secondary data-[state=active]:text-primary"
                             value={item}
                         >
-                            <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-indigo-600 group-hover:bg-gray-100 font-medium">
+                            <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
                                 {item}
                             </div>
                         </Tabs.Trigger>

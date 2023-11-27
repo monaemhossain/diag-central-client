@@ -8,33 +8,33 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
 
-    const footerNavs = [
-        {
-            href: '#',
-            name: 'About'
-        },
-        {
-            href: '#',
-            name: 'Blog'
-        },
-        {
-            href: '#',
-            name: ''
-        },
-        {
-            href: '#',
-            name: 'Team'
-        },
-        {
-            href: '#',
-            name: 'Careers'
-        },
+    // const footerNavs = [
+    //     {
+    //         href: '#',
+    //         name: 'About'
+    //     },
+    //     {
+    //         href: '#',
+    //         name: 'Blog'
+    //     },
+    //     {
+    //         href: '#',
+    //         name: ''
+    //     },
+    //     {
+    //         href: '#',
+    //         name: 'Team'
+    //     },
+    //     {
+    //         href: '#',
+    //         name: 'Careers'
+    //     },
 
-        {
-            href: '#',
-            name: 'Support'
-        }
-    ]
+    //     {
+    //         href: '#',
+    //         name: 'Support'
+    //     }
+    // ]
 
     return (
         <div className='relative z-10'>

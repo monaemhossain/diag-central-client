@@ -8,7 +8,8 @@ import AccessedRoute from "../Components/PrivateRoute/AccessedRoute";
 import PrivateRoute from "../Components/PrivateRoute/PrivateRoute";
 import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
 import UserDashboard from "../Pages/Dashboard/UserDashboard";
-import Profile from "../Components/Profile/Profile";
+import AllTests from "../Pages/AllTests/AllTests";
+import TestDetails from "../Pages/TestDetails/TestDetails";
 
 const Routes = createBrowserRouter([
   {
@@ -37,8 +38,15 @@ const Routes = createBrowserRouter([
         element: <PrivateRoute><UserDashboard /></PrivateRoute>
       },
       {
-        path: '/profile',
-        element: <PrivateRoute><Profile></Profile></PrivateRoute>
+        path: '/all-tests',
+        element: <AllTests />
+      },
+      {
+        path: '/test-details/:id',
+        element: <PrivateRoute><TestDetails /></PrivateRoute>,
+        loader: ({ params }) => {
+          return fetch(`http://localhost:4000/tests/${params.id}`);
+        }
       }
     ]
   },

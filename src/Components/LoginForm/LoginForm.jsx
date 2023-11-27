@@ -8,7 +8,7 @@ import { useContext, useState } from 'react';
 import { AuthContext } from '../AuthProvider/AuthProvider';
 
 const LoginForm = () => {
-    const { logIn, user, dbUsers } = useContext(AuthContext)
+    const { logIn,  dbUsers } = useContext(AuthContext)
     const navigate = useNavigate();
     const [isRole, setIsRole] = useState('')
 

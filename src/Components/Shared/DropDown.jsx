@@ -36,7 +36,7 @@ const DropDown = () => {
               {/* <span className="block text-gray-500/80 p-2">{email}</span> */}
               <div>
                 <NavLink
-                  to='/admin-dashboard'
+                  to='/user-dashboard'
                   className={`${({ isActive, isPending }) =>
                     isPending ? "pending" : isActive ? "active" : ""} py-2 px-2 text-black text-base border border-secondary hover:bg-secondary block rounded-md`}
                 >
