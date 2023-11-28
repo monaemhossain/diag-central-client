@@ -1,88 +1,147 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import AllUsers from '../../Components/AllUsers/AllUsers';
-import { Container } from '@mui/system';
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+import * as Tabs from "@radix-ui/react-tabs";
+import { useState } from "react";
+import AllUsers from '../../Components/AllUsers/AllUsers';
+import ManageAllTests from "../../Components/ManageAllTests/ManageAllTests";
+import AddTest from "../../Components/AddTest/AddTest";
+
+const AdminDashboard = () => {
+    const [selectedTab, setSelectedTab] = useState("All Users");
+
 
     return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`vertical-tabpanel-${index}`}
-            aria-labelledby={`vertical-tab-${index}`}
-            {...other}
+        <Tabs.Root
+            className="mt-4 px-4 md:px-8 sm:flex gap-10"
+            value={selectedTab}
+            onValueChange={(val) => setSelectedTab(val)}
+            orientation="vertical"
         >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    {children}
-                </Box>
-            )}
-        </div>
-    );
-}
+            <div>
+                <Tabs.List
+                    className="hidden border-l flex-col justify-start items-start gap-y-3 text-sm sm:flex pt-5"
+                    aria-label="Manage your account"
+                >
 
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
+                    <Tabs.Trigger
+                        className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary "
+                        value={"All Users"}
+                    >
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                            All Users
+                        </div>
+                    </Tabs.Trigger>
+
+                    <Tabs.Trigger
+                        className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary"
+                        value={"Add a test"}
+                    >
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                            Add a test
+                        </div>
+                    </Tabs.Trigger>
+
+                    <Tabs.Trigger
+                        className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary"
+                        value={"All Tests"}
+                    >
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                            All Tests
+                        </div>
+                    </Tabs.Trigger>
+
+                    <Tabs.Trigger
+                        className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary"
+                        value={"Reservations"}
+                    >
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                            Reservations
+                        </div>
+                    </Tabs.Trigger>
+
+                    <Tabs.Trigger
+                        className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary"
+                        value={"Add banner"}
+                    >
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                            Add banner
+                        </div>
+                    </Tabs.Trigger>
+
+                    <Tabs.Trigger
+                        className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary"
+                        value={"All banners"}
+                    >
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                            All banners
+                        </div>
+                    </Tabs.Trigger>
+
+
+                </Tabs.List>
+                <div className="relative text-gray-500 sm:hidden">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        className="pointer-events-none w-5 h-5 absolute right-2 inset-y-0 my-auto"
+                    >
+                        <path
+                            fillRule="evenodd"
+                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                            clipRule="evenodd"
+                        />
+                    </svg>
+                    <select
+                        value={selectedTab}
+                        className="py-2 px-3 w-full bg-transparent appearance-none outline-none border rounded-lg shadow-sm focus:border-primary text-sm"
+                        onChange={(e) => setSelectedTab(e.target.value)}
+                    >
+
+                        <option value="All Users">All Users</option>
+                        <option value="Add a Test">Add a Test</option>
+                        <option value="All Tests">All Tests</option>
+                        <option value="Reservations">Reservations</option>
+                        <option value="Add banner">Add banner</option>
+                        <option value="All banners">All banners</option>
+                    </select>
+                </div>
+            </div>
+            <div className="flex-1">
+                <Tabs.Content className="py-6" value="All Users">
+                    <div className="w-full mx-auto">
+                        <AllUsers />
+                    </div>
+                </Tabs.Content>
+
+                <Tabs.Content className="py-6" value="Add a test">
+                    <AddTest></AddTest>
+                </Tabs.Content>
+
+                <Tabs.Content className="py-6" value="All Tests">
+                    <ManageAllTests />
+                </Tabs.Content>
+
+                <Tabs.Content className="py-6" value="Reservations">
+                    <p className="text-xs leading-normal">
+                        This is <b>All Users4</b> Tab
+                    </p>
+                </Tabs.Content>
+
+                <Tabs.Content className="py-6" value="Add banner">
+                    <p className="text-xs leading-normal">
+                        This is <b>All Users5</b> Tab
+                    </p>
+                </Tabs.Content>
+
+                <Tabs.Content className="py-6" value="All banners">
+                    <p className="text-xs leading-normal">
+                        This is <b>All Users6</b> Tab
+                    </p>
+                </Tabs.Content>
+
+            </div>
+        </Tabs.Root>
+    );
 };
 
-function a11yProps(index) {
-    return {
-        id: `vertical-tab-${index}`,
-        'aria-controls': `vertical-tabpanel-${index}`,
-    };
-}
-
-export default function VerticalTabs() {
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
-    return (
-        <Box
-            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: "100%" }}
-        >
-            <Tabs
-                orientation="vertical"
-                variant="scrollable"
-                value={value}
-                onChange={handleChange}
-                aria-label="Vertical tabs"
-                sx={{ borderRight: 1, borderColor: 'divider', width: 250 }}
-            >
-                <Tab label="All Users" {...a11yProps(0)} />
-                <Tab label="Add a Test" {...a11yProps(1)} />
-                <Tab label="Reservations" {...a11yProps(2)} />
-                <Tab label="Add banner" {...a11yProps(3)} />
-                <Tab label="All Banners" {...a11yProps(4)} />
-            </Tabs>
-
-            <TabPanel component="div" variant="body2" value={value} index={0}>
-                <Container maxWidth="lg">
-                    <AllUsers />
-                </Container>
-            </TabPanel>
-
-            {/* <TabPanel value={value} index={1}>
-
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-
-            </TabPanel>
-            <TabPanel value={value} index={4}>
-
-            </TabPanel> */}
-        </Box>
-    );
-}
+export default AdminDashboard

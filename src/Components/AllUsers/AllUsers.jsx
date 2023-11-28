@@ -49,7 +49,7 @@ const AllUsers = () => {
         e.preventDefault();
         const role = userRole;
         const activeStatus = status;
-        const updateData = { role, activeStatus, bloodGroup, userName}
+        const updateData = { role, activeStatus, bloodGroup, userName }
 
 
         axios.put(`http://localhost:4000/user/${_id}`, updateData)
@@ -70,7 +70,10 @@ const AllUsers = () => {
     };
     return (
         <>
-            <div className="mt-12 divide-y w-[900px] mx-auto">
+            <div >
+                <h2 className="text-2xl font-semibold text-center">All User List</h2>
+            </div>
+            <div className="divide-y lg:w-[900px] md:w-[600px] mx-auto">
                 {
                     dbUsers.map((item, idx) => (
                         <div key={idx}>
