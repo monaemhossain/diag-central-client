@@ -95,7 +95,7 @@ const AdminDashboard = () => {
 
     return (
         <>
-            <div className="md:flex gap-6">
+            <div className="md:flex gap-6 w-full">
                 <nav
                     className=" w-full min-h-full border-r bg-white space-y-8 md:w-80 pt-6 z-0 overflow-auto">
                     <div className="flex flex-col h-full px-4">
