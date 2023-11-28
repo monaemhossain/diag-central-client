@@ -22,18 +22,6 @@ const TestCard = ({ test }) => {
                         <h3 className="text-2xl text-gray-900">
                             {title}
                         </h3>
-                        {/* <div className='w-full py-3 space-y-2 text-gray-600'>
-                            <div><p>Available Dates:</p>
-                                {
-                                    availableDates.map((item, index) => <p key={index} className='inline font-semibold mr-3'>{item},</p>)
-                                }
-                            </div>
-                            <div><p>Available Time:</p>
-                                {
-                                    timeSlots.map((item, index) => <p key={index} className='inline font-semibold'>{item}, </p>)
-                                }
-                            </div>
-                        </div> */}
                         <p className="text-gray-400 text-sm mt-1">{description.slice(0, 100)}...</p>
                         <Button variant='contained' fullWidth sx={{fontWeight: 'bold'}}>More Details</Button>
                     </div>

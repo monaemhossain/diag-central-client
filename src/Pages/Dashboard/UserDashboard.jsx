@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import * as Tabs from "@radix-ui/react-tabs";
 import '@radix-ui/themes/styles.css';
 import UserAppointments from "../../Components/UserAppointments/UserAppointments";
+import Profile from "../../Components/Profile/Profile";
 
 const Menu = (props) => {
     const { children, items } = props
@@ -101,13 +102,11 @@ const UserDashboard = () => {
 
                     <Tabs.Content className="py-6" value='Test Results'>
                         <p className="text-xs leading-normal">
-                            This is <b>hijibiji</b> Tab
+                            This is <b>some text</b> Tab
                         </p>
                     </Tabs.Content>
                     <Tabs.Content className="py-6" value='My Profile'>
-                        <p className="text-xs leading-normal">
-                            This is <b>proofile</b> Tab
-                        </p>
+                        <Profile />
                     </Tabs.Content>
                 </div>
 
