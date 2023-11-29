@@ -48,11 +48,11 @@ const ManageAllTests = () => {
                                         <img src={item.image} className="w-10 h-10 rounded-full" />
                                         <div>
                                             <span className="block text-gray-700 text-sm font-medium">{item.title}</span>
-                                            <span className="block text-gray-700 text-xs">{item.shortDescription}</span>
+                                            <span className="block text-gray-700 text-xs">{item?.description?.slice(0,30)}</span>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap space-x-3">{item.availableDates.map(i=><span key={i}>{ i }</span>)}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap space-x-3">{item.timeSlots.map(i=><span key={i}>{ i }</span>)}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap space-x-3">{item.availableDate}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap space-x-3">{item.timeSlot}</td>
                                     <td className="text-right px-6 whitespace-nowrap">
                                         <a href="javascript:void()" className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg">
                                             Edit

@@ -1,8 +1,40 @@
+import axios from "axios";
+import toast from "react-hot-toast";
+import validator from 'validator';
+
 const AddTest = () => {
 
+    const handleAddTest = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const title = form.title.value
+        const availableDate = form.availableDate.value
+        const timeSlotFrom = form.timeSlotFrom.value
+        const timeSlotTo = form.timeSlotTo.value
+        const timeSlot = (`${timeSlotFrom} - ${timeSlotTo}`)
+        const image = form.image.value
+        if (validator.isURL(image) === false) {
+            toast.error('image link is invalid')
+            return;
+        }
+        const description = form.description.value
+        const availableSlot = form.availableSlot.value
+        const price = form.price.value
+        const testData = { title, availableDate, timeSlot, image, description, availableSlot, price }
+        // console.log(testData);
+        axios.post('http://localhost:4000/tests', testData)
+            .then((res) => {
+                console.log(res);
+                toast.success("Test Added")
+            }).catch((err) => {
+                toast.error("something wrong, unable to add test")
+                console.log(err)
+            })
+    }
+
     return (
-        <main className="w-full h-screen flex flex-col items-center">
-            <div className="w-full space-y-6 text-gray-600 sm:max-w-md">
+        <main className="w-full min-h-screen flex flex-col items-center">
+            <div className="w-full space-y-1 text-gray-600 sm:max-w-md">
                 <div className="text-center">
                     <div className="mt-5 space-y-2">
                         <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Add a test</h3>
@@ -10,7 +42,7 @@ const AddTest = () => {
                 </div>
                 <div className="bg-white shadow p-4 py-6 sm:p-6 sm:rounded-lg">
                     <form
-                        onSubmit={(e) => e.preventDefault()}
+                        onSubmit={(e) => handleAddTest(e)}
                         className="space-y-5"
 
                     >
@@ -23,7 +55,7 @@ const AddTest = () => {
                                 id="title"
                                 type="text"
                                 required
-                                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
                             />
                         </div>
                         <div>
@@ -34,30 +66,79 @@ const AddTest = () => {
                                 id="availableDate"
                                 type="date"
                                 required
-                                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
                             />
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div>
+                                <label className="font-medium" htmlFor="timeSlotFrom">
+                                    Available Time From
+                                </label>
+                                <input
+                                    id="timeSlotFrom"
+                                    type="time"
+                                    required
+                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
+                                />
+                            </div>
+                            <div>
+                                <label className="font-medium" htmlFor="timeSlotTo">
+                                    Available Time To
+                                </label>
+                                <input
+                                    id="timeSlotTo"
+                                    type="time"
+                                    required
+                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
+                                />
+                            </div>
                         </div>
                         <div>
                             <label className="font-medium" htmlFor="image">
-                                Banner image url
+                                Test thumbnail image url
                             </label>
                             <input
                                 id="image"
                                 type="text"
                                 required
-                                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
                             />
                         </div>
                         <div>
-                            <label className="font-medium" htmlFor="image">
-                                Test Description
+                            <label className="font-medium" htmlFor="description">
+                                Test description
                             </label>
-                            <textarea className="textarea textarea-bordered" placeholder="Bio"></textarea>
+                            <textarea required id="description" className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"></textarea>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div>
+                                <label className="font-medium" htmlFor="availableSlot">
+                                    Available slot
+                                </label>
+                                <input
+                                    id="availableSlot"
+                                    type="number"
+                                    required
+                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
+                                />
+                            </div>
+                            <div>
+                                <label className="font-medium" htmlFor="price">
+                                    Price
+                                </label>
+                                <input
+                                    id="price"
+                                    type="number"
+                                    required
+                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
+                                />
+                            </div>
                         </div>
                         <button
-                            className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
+                            type="submit"
+                            className="w-full px-4 py-2 text-white font-medium bg-primary hover:bg-secondary active:bg-primary rounded-lg duration-150"
                         >
-                            Create account
+                            Add test
                         </button>
                     </form>
                 </div>

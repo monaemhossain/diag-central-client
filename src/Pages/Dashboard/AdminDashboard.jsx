@@ -18,7 +18,7 @@ const AdminDashboard = () => {
         >
             <div>
                 <Tabs.List
-                    className="hidden border-l flex-col justify-start items-start gap-y-3 text-sm sm:flex pt-5"
+                    className="hidden fixed border-l flex-col justify-start items-start gap-y-3 text-sm sm:flex pt-5"
                     aria-label="Manage your account"
                 >
 
@@ -26,7 +26,7 @@ const AdminDashboard = () => {
                         className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary "
                         value={"All Users"}
                     >
-                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-normal text-base">
                             All Users
                         </div>
                     </Tabs.Trigger>
@@ -35,7 +35,7 @@ const AdminDashboard = () => {
                         className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary"
                         value={"Add a test"}
                     >
-                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-normal text-base">
                             Add a test
                         </div>
                     </Tabs.Trigger>
@@ -44,7 +44,7 @@ const AdminDashboard = () => {
                         className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary"
                         value={"All Tests"}
                     >
-                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-normal text-base">
                             All Tests
                         </div>
                     </Tabs.Trigger>
@@ -53,7 +53,7 @@ const AdminDashboard = () => {
                         className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary"
                         value={"Reservations"}
                     >
-                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-normal text-base">
                             Reservations
                         </div>
                     </Tabs.Trigger>
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
                         className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary"
                         value={"Add banner"}
                     >
-                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-normal text-base">
                             Add banner
                         </div>
                     </Tabs.Trigger>
@@ -71,7 +71,7 @@ const AdminDashboard = () => {
                         className="group outline-none px-1.5 border-l-2 border-white text-gray-500 data-[state=active]:border-primary data-[state=active]:text-primary"
                         value={"All banners"}
                     >
-                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-medium">
+                        <div className="py-1.5 px-3 rounded-lg duration-150 group-hover:text-primary group-hover:bg-gray-100 font-normal text-base">
                             All banners
                         </div>
                     </Tabs.Trigger>
@@ -122,9 +122,9 @@ const AdminDashboard = () => {
                 </Tabs.Content>
 
                 <Tabs.Content className="py-6" value="Reservations">
-                    <p className="text-xs leading-normal">
+                    <div className="max-w-screen-xl mx-auto px-4 md:px-8">
                         This is <b>All Users4</b> Tab
-                    </p>
+                    </div>
                 </Tabs.Content>
 
                 <Tabs.Content className="py-6" value="Add banner">
