@@ -56,8 +56,8 @@ const UserAppointments = () => {
                                 <div>
                                     <span className="block text-sm text-gray-700 font-semibold">{item.title}</span>
                                     <span className="block text-sm text-gray-600">{item.userEmail}</span>
-                                    <p><span className="font-semibold">Appointment date:</span> {item.availableDates} </p>
-                                    <p><span className="font-semibold">Appointment time:</span>  {item.timeSlots} </p>
+                                    <p><span className="font-semibold">Appointment date:</span> {item.availableDate} </p>
+                                    <p><span className="font-semibold">Appointment time:</span>  {item.timeSlot} </p>
                                 </div>
                             </div>
                             <Button onClick={() => handleCancel(item._id)} variant="contained" color="warning">Cancel Appointment</Button>

@@ -1,17 +1,109 @@
-import { AlertDialog, Button, Flex } from "@radix-ui/themes";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+
 import axios from "axios";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import validator from 'validator';
+import { Pagination } from '@mui/material';
+
+
+
+
+
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}));
 
 const ManageAllTests = () => {
-    const [tests, setTests] = useState();
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [tests, setTests] = useState([]);
+    const [test, setTest] = useState([])
+    const [testId, setTestId] = useState('')
 
     useEffect(() => {
         axios.get('http://localhost:4000/tests')
             .then(res => setTests(res.data))
     }, [])
     // console.log(tests);
+
+
+
+
+
+    // edit and delete dialog open and close button function
+    const [openEdit, setOpenEdit] = useState(false);
+    const handleClickOpenEdit = async (id) => {
+        await axios.get(`http://localhost:4000/test/${id}`)
+            .then(res => setTest(res.data))
+            .catch(err => console.log(err))
+        setOpenEdit(true);
+        setTestId(id);
+    };
+    // console.log(times[0]);
+
+    const handleCloseEdit = () => {
+        setOpenEdit(false);
+    };
+
+    const [openDelete, setOpenDelete] = useState(false);
+    const handleClickOpenDelete = () => {
+        setOpenDelete(true);
+    };
+    const handleCloseDelete = () => {
+        setOpenDelete(false);
+    };
+
+
+
+
+
+    // edit test
+    const handleUpdateTest = (e, id) => {
+        e.preventDefault();
+        const form = e.target;
+        const title = form.title.value;
+        const availableDate = form.availableDate.value;
+        const timeSlot = form.timeSlot.value;
+        const image = form.image.value;
+
+        if (validator.isURL(image) === false) {
+            toast.error('Image link is invalid');
+            return;
+        }
+
+        const description = form.description.value;
+        const availableSlot = parseInt(form.availableSlot.value);
+        const price = form.price.value;
+
+        const updatedData = { title, availableDate, timeSlot, image, description, availableSlot, price };
+        // console.log(testData);
+        console.log(testId);
+        axios.put(`http://localhost:4000/update/test/${testId}`, updatedData)
+            .then(() => {
+                axios.get('http://localhost:4000/tests')
+                    .then(res => setTests(res.data))
+                toast.success('Test Updated successfully')
+            })
+            .catch(err => console.log(err))
+            setOpenEdit(false)
+    }
+
+
+
+    // delete test
     const handleDeleteTest = (e, id) => {
         e.preventDefault();
         console.log(id);
@@ -20,9 +112,8 @@ const ManageAllTests = () => {
                 axios.get('http://localhost:4000/tests')
                     .then(res => setTests(res.data))
                     .catch((err) => console.log(err))
-
             });
-        setIsDialogOpen(false);
+        setOpenDelete(false)
     }
 
     return (
@@ -63,40 +154,167 @@ const ManageAllTests = () => {
                                     <td className="px-6 py-4 whitespace-nowrap space-x-3">{item.timeSlot}</td>
                                     <td className="px-6 py-4 whitespace-nowrap space-x-3 text-center">{item.availableSlot}</td>
                                     <td className="text-right px-6 whitespace-nowrap">
-                                        <button className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg">
-                                            Edit
-                                        </button>
+
+                                        <React.Fragment>
+                                            <button onClick={() => handleClickOpenEdit(item._id)}
+                                                className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                                            >
+                                                Edit
+                                            </button>
+                                            <BootstrapDialog
+                                                onClose={handleCloseEdit}
+                                                aria-labelledby="customized-dialog-title"
+                                                open={openEdit}
+                                            >
+                                                <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+                                                    Edit Test
+                                                </DialogTitle>
+                                                <IconButton
+                                                    aria-label="close"
+                                                    onClick={handleCloseEdit}
+                                                    sx={{
+                                                        position: 'absolute',
+                                                        right: 8,
+                                                        top: 8,
+                                                        color: (theme) => theme.palette.grey[500],
+                                                    }}
+                                                >
+                                                    <CloseIcon />
+                                                </IconButton>
+                                                <DialogContent dividers>
+                                                    <div className="bg-white w-full shadow p-4 py-6 sm:p-6 sm:rounded-lg">
+                                                        <form onSubmit={(e) => handleUpdateTest(e, item._id)} className="space-y-5">
+                                                            <div>
+                                                                <label className="font-medium" htmlFor="title">
+                                                                    Update test name
+                                                                </label>
+                                                                <input
+                                                                    id="title"
+                                                                    type="text"
+                                                                    defaultValue={test.title}
+                                                                    required
+                                                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="font-medium" htmlFor="availableDate">
+                                                                    Update date
+                                                                </label>
+                                                                <br />
+                                                                <input
+                                                                    defaultValue={test.availableDate}
+                                                                    id="availableDate"
+                                                                    type="date"
+                                                                    required
+                                                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="font-medium" htmlFor="timeSlot">
+                                                                    Update Time
+                                                                </label>
+                                                                <input
+                                                                    id="timeSlot"
+                                                                    type="text"
+                                                                    defaultValue={test.timeSlot}
+                                                                    required
+                                                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="font-medium" htmlFor="image">
+                                                                    update test thumbnail image url
+                                                                </label>
+                                                                <input
+                                                                    defaultValue={test.image}
+                                                                    id="image"
+                                                                    type="text"
+                                                                    required
+                                                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="font-medium" htmlFor="description">
+                                                                    Update description
+                                                                </label>
+                                                                <textarea defaultValue={test.description} required id="description" className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"></textarea>
+                                                            </div>
+                                                            <div className="grid grid-cols-2 gap-2">
+                                                                <div>
+                                                                    <label className="font-medium" htmlFor="availableSlot">
+                                                                        Update slot
+                                                                    </label>
+                                                                    <input
+                                                                        defaultValue={test.availableSlot}
+                                                                        id="availableSlot"
+                                                                        type="number"
+                                                                        required
+                                                                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <label className="font-medium" htmlFor="price">
+                                                                        Change Price
+                                                                    </label>
+                                                                    <input
+                                                                        defaultValue={test.price}
+                                                                        id="price"
+                                                                        type="number"
+                                                                        required
+                                                                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex gap-2">
+                                                                <button
+                                                                    type="submit"
+                                                                    className="w-full px-4 py-2 text-white font-medium bg-primary hover:bg-secondary active:bg-primary rounded-lg duration-150"
+                                                                >
+                                                                    Update Test
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </DialogContent>
+
+                                            </BootstrapDialog>
+                                        </React.Fragment>
 
 
-                                        <AlertDialog.Root open={isDialogOpen} onClose={() => setIsDialogOpen(false)} >
-                                            <AlertDialog.Trigger>
+                                        {/* delete test */}
 
-                                                <button onClick={() => setIsDialogOpen(true)} className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg">
-                                                    Delete
-                                                </button>
-                                            </AlertDialog.Trigger>
-                                            <AlertDialog.Content style={{ maxWidth: 450 }}>
-                                                <AlertDialog.Title>Delete Test</AlertDialog.Title>
-                                                <AlertDialog.Description size="2">
+                                        <React.Fragment>
+                                            <button onClick={handleClickOpenDelete} className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg">
+                                                Delete
+                                            </button>
+                                            <BootstrapDialog
+                                                onClose={handleCloseDelete}
+                                                aria-labelledby="customized-dialog-title"
+                                                open={openDelete}
+                                            >
+                                                <DialogTitle sx={{ m: 0, p: 3 }} id="customized-dialog-title">
                                                     Are you sure? This Test will be deleted permanently and cannot be recovered!!
-                                                </AlertDialog.Description>
-
-                                                <Flex gap="3" mt="4" justify="end">
-                                                    <AlertDialog.Cancel>
-                                                        <Button variant="soft" color="gray" onClick={() => setIsDialogOpen(false)}>
-                                                            Cancel
-                                                        </Button>
-                                                    </AlertDialog.Cancel>
-                                                    <AlertDialog.Action>
-                                                        <Button variant="solid" color="red" onClick={(e) => handleDeleteTest(e, item._id)}>
-                                                            Yes! Delete it
-                                                        </Button>
-                                                    </AlertDialog.Action>
-                                                </Flex>
-                                            </AlertDialog.Content>
-                                        </AlertDialog.Root>
-
-
+                                                </DialogTitle>
+                                                <IconButton
+                                                    aria-label="close"
+                                                    onClick={handleCloseDelete}
+                                                    sx={{
+                                                        position: 'absolute',
+                                                        right: 8,
+                                                        top: 8,
+                                                        color: (theme) => theme.palette.grey[500],
+                                                    }}
+                                                >
+                                                    <CloseIcon />
+                                                </IconButton>
+                                                <DialogActions sx={{ p: 2 }}>
+                                                    <Button onClick={handleCloseDelete}>No</Button>
+                                                    <Button variant='contained' color='error' onClick={(e) => handleDeleteTest(e, item._id)} autoFocus>
+                                                        Yes! Delete it
+                                                    </Button>
+                                                </DialogActions>
+                                            </BootstrapDialog>
+                                        </React.Fragment>
 
                                     </td>
                                 </tr>
@@ -106,6 +324,7 @@ const ManageAllTests = () => {
                 </table>
             </div>
 
+                <Pagination count={10} variant="outlined" sx={{mt: 3, display:'grid', justifyContent: 'center'}}/>
         </div>
     )
 }

@@ -23,16 +23,25 @@ const AllUsers = () => {
     // console.log(dbUsers);
     const [open, setOpen] = useState(false);
     const [userData, setUserData] = useState([])
+    const { imageUrl, userName, userEmail, role, activeStatus, _id } = userData;
+    // update user role and activeStatus
+    const [userRole, setUserRole] = useState(role || "");
+    const [status, setStatus] = useState(activeStatus || "");
+    const handleChangeRole = (event) => {
+        setUserRole(event.target.value);
+    };
+    const handleChangeStatus = (event) => {
+        setStatus(event.target.value);
+    };
 
-
-    const { imageUrl, userName, bloodGroup, userEmail, role, activeStatus, _id } = userData;
     // console.log(_id);
     const handleOpen = async (id) => {
         try {
             // Make the asynchronous API call
             const response = await axios.get(`http://localhost:4000/user/${id}`);
             setUserData(response.data);
-
+            setUserRole(response.data.role);
+            setStatus(response.data.activeStatus);
             // Set open state
             setOpen(true);
         } catch (error) {
@@ -40,8 +49,7 @@ const AllUsers = () => {
         }
     };
     const handleClose = () => setOpen(false);
-    const [userRole, setUserRole] = useState(role || ""); // Set initial value from userData or provide a default
-    const [status, setStatus] = useState(activeStatus || ""); // Set initial value from userData or provide a default
+
 
     // console.log(role);
 
@@ -49,10 +57,10 @@ const AllUsers = () => {
         e.preventDefault();
         const role = userRole;
         const activeStatus = status;
-        const updateData = { role, activeStatus, bloodGroup, userName }
+        const updateData = { role, activeStatus }
 
 
-        axios.put(`http://localhost:4000/user/${_id}`, updateData)
+        axios.put(`http://localhost:4000/update/role/${_id}`, updateData)
             .then(() => {
                 toast.success('User updated');
             }).catch(err => console.log(err))
@@ -62,12 +70,7 @@ const AllUsers = () => {
 
 
 
-    const handleChangeRole = (event) => {
-        setUserRole(event.target.value);
-    };
-    const handleChangeStatus = (event) => {
-        setStatus(event.target.value);
-    };
+
     return (
         <>
             <div >
@@ -126,6 +129,7 @@ const AllUsers = () => {
                                                             value={userRole}
                                                             label="Role"
                                                             onChange={handleChangeRole}
+                                                            defaultValue={role}
                                                         >
                                                             <MenuItem value={"admin"}>admin</MenuItem>
                                                             <MenuItem value={"user"}>user</MenuItem>
@@ -139,6 +143,7 @@ const AllUsers = () => {
                                                             value={status}
                                                             label="Active status"
                                                             onChange={handleChangeStatus}
+                                                            defaultValue={activeStatus}
                                                         >
                                                             <MenuItem value={"active"}>active</MenuItem>
                                                             <MenuItem value={"block"}>block</MenuItem>

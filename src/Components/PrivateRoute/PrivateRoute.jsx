@@ -10,7 +10,7 @@ const PrivateRoute = ({ children }) => {
 
     if (isLoading) {
         return (
-            <div className="flex min-h-[calc(100vh-105px)] items-center justify-center">
+            <div className="flex min-h-[calc(100vh-158px)] items-center justify-center">
                 <InfinitySpin
                     width='200'
                     color="#5CF0B0"

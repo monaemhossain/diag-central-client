@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const AddTest = () => {
-    const [startDate, setStartDate] = useState(new Date());
+    
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(new Date());
 
@@ -14,7 +14,7 @@ const AddTest = () => {
         e.preventDefault();
         const form = e.target;
         const title = form.title.value;
-        const availableDate = startDate;
+        const availableDate = form.availableDate.value;
         const timeSlotFrom = startTime;
         const timeSlotTo = endTime;
         const timeSlot = `${formatTime(timeSlotFrom)} - ${formatTime(timeSlotTo)}`;
@@ -26,7 +26,7 @@ const AddTest = () => {
         }
 
         const description = form.description.value;
-        const availableSlot = form.availableSlot.value;
+        const availableSlot = parseInt(form.availableSlot.value);
         const price = form.price.value;
 
         const testData = { title, availableDate, timeSlot, image, description, availableSlot, price };

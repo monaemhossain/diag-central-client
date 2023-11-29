@@ -1,12 +1,33 @@
 import { Button } from '@mui/material';
 import { Container } from '@mui/system';
 import PropTypes from 'prop-types'
+import { useContext } from 'react';
 import { useLoaderData } from 'react-router-dom';
+import { AuthContext } from '../../Components/AuthProvider/AuthProvider';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const TestDetails = () => {
-    // console.log(test);
+    const { user, dbUsers } = useContext(AuthContext)
+    const dbUser = dbUsers.filter(item => user.email === item.userEmail)
     const testDetails = useLoaderData()
-    const { availableDate, description, image, timeSlot, title, availableSlot, price } = testDetails;
+    const { availableDate, description, image, timeSlot, title, availableSlot, price, _id } = testDetails;
+    
+    
+    const appointmentData = { availableDate, description, image, timeSlot, title, availableSlot, price, userEmail: user.email, status: 'pending' }
+    const handleGetAppointment = (id) => {
+        axios.post('http://localhost:4000/appointments', appointmentData)
+            .then(() => {
+                axios.put(`http://localhost:4000/test/decrease/${id}`)
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err))
+                toast.success('Your appointment is booked')
+            })
+            .catch(() => {
+                toast.error("unable to book your appointment")
+            })
+    }
+
     return (
         <Container maxWidth="lg">
             <div className='py-8'>
@@ -31,7 +52,9 @@ const TestDetails = () => {
                             </div>
                             <div className='w-full grid grid-cols-2 '>
                                 <h1 className='flex justify-center items-center font-bold'>Test Price: <span className='text-red-900'> {price} $</span></h1>
-                                <Button variant='contained' >Get an Appointment</Button>
+                                {
+                                    availableSlot <= 0 || dbUser[0].activeStatus === 'block' ? <Button variant='contained' disabled>get</Button> : <Button variant='contained' onClick={() => handleGetAppointment(_id)} className='bg-red-400'>Get an Appointment</Button>
+                                }
                             </div>
                         </div>
                     </div>

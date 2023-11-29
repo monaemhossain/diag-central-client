@@ -50,7 +50,7 @@ const AppMenu = (props) => {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
-  const appLogo = (<img className='h-14' src="logo.png" alt="Diag Central Logo" />)
+  const appLogo = (<img className='h-14' src="/logo.png" alt="Diag Central Logo" />)
   const appBarMenu = (
     <List sx={{display:{md:'flex'}, gap: 3, alignItems: 'center'}}>
       {

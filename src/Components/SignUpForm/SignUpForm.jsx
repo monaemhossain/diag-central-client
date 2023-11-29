@@ -128,6 +128,8 @@ const SignUpForm = () => {
                                 displayName: userName,
                                 photoURL: imageUrl,
                             })
+
+                            
                             const userDetails = { userName, userEmail, userBloodGroup, userDistrict, userUpazila, imageUrl, activeStatus, role }
                             console.log(newUser);
                             // post user details to the server
