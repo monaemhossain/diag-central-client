@@ -4,16 +4,12 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import toast from 'react-hot-toast';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '../AuthProvider/AuthProvider';
 
 const LoginForm = () => {
-    const { logIn,  dbUsers } = useContext(AuthContext)
+    const { logIn, dbUsers } = useContext(AuthContext)
     const navigate = useNavigate();
-    const [isRole, setIsRole] = useState('')
-
-    // navigate to user or admin dashboard
-
 
     // log in with email and password
     const handleLogin = (e) => {
@@ -27,19 +23,14 @@ const LoginForm = () => {
                 toast.success("Login success")
                 const currentUser = dbUsers.filter(user => userEmail == user.userEmail)
                 const { role } = currentUser[0];
-                setIsRole(role)
-                console.log(role);
-                console.log(currentUser);
-
-               if(isRole === 'admin'){
-                    navigate('/admin-dashboard');                    
-                }else if(isRole === 'user'){                    
-                    navigate('/user-dashboard');
-                }
             
-            navigate(location?.state ? location.state : '/');
 
-            
+                   if(role === 'admin'){
+                        navigate('/admin-dashboard');                    
+                    }else if(role === 'user'){                    
+                        navigate('/user-dashboard');
+                    }
+
             })
             .catch((err) => {
                 console.log(err);
@@ -53,7 +44,6 @@ const LoginForm = () => {
                 }
                 toast.error("Email and password does not match")
             })
-        console.log(isRole);
     }
 
     return (

@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -24,8 +24,7 @@ const SignUpForm = () => {
     const [upazila, setUpazila] = useState('')
     const [district, setDistrict] = useState('')
 
-    const { signUp, user, dbUsers } = useContext(AuthContext)
-    const navigate = useNavigate();
+    const { signUp } = useContext(AuthContext);
 
     const bloodGroupList = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
     const handleChangeBlood = (event) => {
@@ -58,18 +57,6 @@ const SignUpForm = () => {
         // console.log(file);
         setUserImage(file);
     };
-
-    // redirect user based on there role
-    const [isRole, setIsRole] = useState('')
-
-    if(user){
-        const {email} = user;
-        const currentUser = dbUsers.filter(user => email == user.userEmail)
-        const { role } = currentUser[0];
-        setIsRole(role)
-    }
-    
-    
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -129,7 +116,7 @@ const SignUpForm = () => {
                                 photoURL: imageUrl,
                             })
 
-                            
+
                             const userDetails = { userName, userEmail, userBloodGroup, userDistrict, userUpazila, imageUrl, activeStatus, role }
                             console.log(newUser);
                             // post user details to the server
@@ -141,12 +128,8 @@ const SignUpForm = () => {
                                 }
                             }).catch(err => console.log(err))
                             
-                            if(isRole === 'admin'){
-                                navigate('/admin-dashboard')
-                            }else if(isRole === 'user'){
-                                navigate('/user-dashboard')
-                            }
                             // navigate(`${isRole === 'admin' ? '/admin-dashboard' : '/user-dashboard'}`);
+                            
                         })
 
                         .catch((error) => {

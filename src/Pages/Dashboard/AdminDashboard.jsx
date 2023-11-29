@@ -1,13 +1,29 @@
 
 import * as Tabs from "@radix-ui/react-tabs";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AllUsers from '../../Components/AllUsers/AllUsers';
 import ManageAllTests from "../../Components/ManageAllTests/ManageAllTests";
 import AddTest from "../../Components/AddTest/AddTest";
+import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const AdminDashboard = () => {
+    const { user, dbUsers } = useContext(AuthContext)
+    const dbUser = dbUsers?.filter(item => user.email === item.userEmail)
     const [selectedTab, setSelectedTab] = useState("All Users");
+    const isAdmin = dbUser[0].role === 'admin'
+    const navigate = useNavigate()
 
+
+
+    useEffect(() => {
+        // Redirect to '/' if the user is not an admin
+        if (!isAdmin) {
+            toast.error('You do not have admin access');
+            navigate('/');
+        }
+    }, [isAdmin, navigate]);
 
     return (
         <Tabs.Root

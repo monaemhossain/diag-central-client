@@ -5,7 +5,7 @@ import validator from 'validator';
 
 const TestCard = ({ test }) => {
     // console.log(test);
-    const { availableDate, availableSlot, description, image, timeSlot, title, _id } = test;
+    const { availableDate, description, image, timeSlot, title, _id } = test;
     const navigate = useNavigate()
     const handleDetails = (id) => {
         navigate(`/test-details/${id}`)

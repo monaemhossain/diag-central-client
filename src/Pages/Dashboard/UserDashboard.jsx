@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import * as Tabs from "@radix-ui/react-tabs";
 import '@radix-ui/themes/styles.css';
 import UserAppointments from "../../Components/UserAppointments/UserAppointments";
 import Profile from "../../Components/Profile/Profile";
+import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Menu = (props) => {
     const { children, items } = props
@@ -45,14 +48,20 @@ const Menu = (props) => {
 }
 
 const UserDashboard = () => {
-    // firebase user
-    // const { user, dbUsers } = useContext(AuthContext)
-    // const { displayName, photoURL, email } = user;
-    // db user
-    // const currentUser = dbUsers.filter(user => email == user.userEmail)
-    // const { role } = currentUser[0];
+    const { user, dbUsers } = useContext(AuthContext)
+    const dbUser = dbUsers?.filter(item => user.email === item.userEmail)
+    const isActive = dbUser[0].activeStatus === 'active'
+    const navigate = useNavigate()
 
-    // const [selectedTab, setSelectedTab] = useState("Upcoming Appointments");
+    
+    useEffect(() => {
+        // Redirect to '/' if the user is blocked
+        if (!isActive) {
+            toast.error('You can not access the dashboard');
+            navigate('/');
+        }
+    }, [isActive, navigate]);
+
     const tabItems = [
         "Upcoming Appointments",
         "Test Results",

@@ -71,7 +71,7 @@ const ManageAllTests = () => {
 
 
     // edit test
-    const handleUpdateTest = (e, id) => {
+    const handleUpdateTest = (e) => {
         e.preventDefault();
         const form = e.target;
         const title = form.title.value;
@@ -90,7 +90,7 @@ const ManageAllTests = () => {
 
         const updatedData = { title, availableDate, timeSlot, image, description, availableSlot, price };
         // console.log(testData);
-        console.log(testId);
+        // console.log(testId);
         axios.put(`http://localhost:4000/update/test/${testId}`, updatedData)
             .then(() => {
                 axios.get('http://localhost:4000/tests')
@@ -183,7 +183,7 @@ const ManageAllTests = () => {
                                                 </IconButton>
                                                 <DialogContent dividers>
                                                     <div className="bg-white w-full shadow p-4 py-6 sm:p-6 sm:rounded-lg">
-                                                        <form onSubmit={(e) => handleUpdateTest(e, item._id)} className="space-y-5">
+                                                        <form onSubmit={(e) => handleUpdateTest(e)} className="space-y-5">
                                                             <div>
                                                                 <label className="font-medium" htmlFor="title">
                                                                     Update test name
