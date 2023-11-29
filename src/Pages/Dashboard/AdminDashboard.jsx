@@ -7,6 +7,7 @@ import AddTest from "../../Components/AddTest/AddTest";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Reservations from "../../Components/Reservations/Reservations";
 
 const AdminDashboard = () => {
     const { user, dbUsers } = useContext(AuthContext)
@@ -34,7 +35,7 @@ const AdminDashboard = () => {
         >
             <div>
                 <Tabs.List
-                    className="hidden fixed border-l flex-col justify-start items-start gap-y-3 text-sm sm:flex pt-5"
+                    className="hidden border-l flex-col justify-start items-start gap-y-3 text-sm sm:flex pt-5"
                     aria-label="Manage your account"
                 >
 
@@ -122,7 +123,7 @@ const AdminDashboard = () => {
                     </select>
                 </div>
             </div>
-            <div className="flex-1">
+            <div className="flex-1 w-full flex flex-col ">
                 <Tabs.Content className="py-6" value="All Users">
                     <div className="w-full mx-auto">
                         <AllUsers />
@@ -138,9 +139,7 @@ const AdminDashboard = () => {
                 </Tabs.Content>
 
                 <Tabs.Content className="py-6" value="Reservations">
-                    <div className="max-w-screen-xl mx-auto px-4 md:px-8">
-                        This is <b>All Users4</b> Tab
-                    </div>
+                    <Reservations />
                 </Tabs.Content>
 
                 <Tabs.Content className="py-6" value="Add banner">

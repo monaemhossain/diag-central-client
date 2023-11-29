@@ -14,7 +14,7 @@ const TestDetails = () => {
     const { availableDate, description, image, timeSlot, title, availableSlot, price, _id } = testDetails;
     
     
-    const appointmentData = { availableDate, description, image, timeSlot, title, availableSlot, price, userEmail: user.email, status: 'pending' }
+    const appointmentData = { availableDate, description, image, timeSlot, title, availableSlot, price, userName: user.displayName, userPhoto: user.photoURL, userEmail: user.email, status: 'pending' }
     const handleGetAppointment = (id) => {
         axios.post('http://localhost:4000/appointments', appointmentData)
             .then(() => {
