@@ -1,5 +1,6 @@
 
-const ManageTable = ({}) => {
+
+onst ManageTable = ({}) => {
     return (
         <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
             <table className="w-full table-auto text-sm text-left">

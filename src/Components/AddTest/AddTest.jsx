@@ -1,36 +1,49 @@
+import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import validator from 'validator';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const AddTest = () => {
+    const [startDate, setStartDate] = useState(new Date());
+    const [startTime, setStartTime] = useState(new Date());
+    const [endTime, setEndTime] = useState(new Date());
 
-    const handleAddTest = (e) => {
+    const handleAddTest = async (e) => {
         e.preventDefault();
         const form = e.target;
-        const title = form.title.value
-        const availableDate = form.availableDate.value
-        const timeSlotFrom = form.timeSlotFrom.value
-        const timeSlotTo = form.timeSlotTo.value
-        const timeSlot = (`${timeSlotFrom} - ${timeSlotTo}`)
-        const image = form.image.value
+        const title = form.title.value;
+        const availableDate = startDate;
+        const timeSlotFrom = startTime;
+        const timeSlotTo = endTime;
+        const timeSlot = `${formatTime(timeSlotFrom)} - ${formatTime(timeSlotTo)}`;
+        const image = form.image.value;
+
         if (validator.isURL(image) === false) {
-            toast.error('image link is invalid')
+            toast.error('Image link is invalid');
             return;
         }
-        const description = form.description.value
-        const availableSlot = form.availableSlot.value
-        const price = form.price.value
-        const testData = { title, availableDate, timeSlot, image, description, availableSlot, price }
-        // console.log(testData);
-        axios.post('http://localhost:4000/tests', testData)
-            .then((res) => {
-                console.log(res);
-                toast.success("Test Added")
-            }).catch((err) => {
-                toast.error("something wrong, unable to add test")
-                console.log(err)
-            })
-    }
+
+        const description = form.description.value;
+        const availableSlot = form.availableSlot.value;
+        const price = form.price.value;
+
+        const testData = { title, availableDate, timeSlot, image, description, availableSlot, price };
+
+        try {
+            const response = await axios.post('http://localhost:4000/tests', testData);
+            console.log(response.data);
+            toast.success("Test Added");
+        } catch (error) {
+            toast.error("Something went wrong, unable to add test");
+            console.log(error);
+        }
+    };
+
+    const formatTime = (time) => {
+        return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).format(time);
+    };
 
     return (
         <main className="w-full min-h-screen flex flex-col items-center">
@@ -41,12 +54,7 @@ const AddTest = () => {
                     </div>
                 </div>
                 <div className="bg-white shadow p-4 py-6 sm:p-6 sm:rounded-lg">
-                    <form
-                        onSubmit={(e) => handleAddTest(e)}
-                        className="space-y-5"
-
-                    >
-                        {/* image , available dates, slots , title, short description */}
+                    <form onSubmit={handleAddTest} className="space-y-5">
                         <div>
                             <label className="font-medium" htmlFor="title">
                                 Test name
@@ -62,6 +70,7 @@ const AddTest = () => {
                             <label className="font-medium" htmlFor="availableDate">
                                 Available date
                             </label>
+                            <br />
                             <input
                                 id="availableDate"
                                 type="date"
@@ -74,10 +83,14 @@ const AddTest = () => {
                                 <label className="font-medium" htmlFor="timeSlotFrom">
                                     Available Time From
                                 </label>
-                                <input
-                                    id="timeSlotFrom"
-                                    type="time"
-                                    required
+                                <DatePicker
+                                    selected={startTime}
+                                    onChange={(date) => setStartTime(date)}
+                                    showTimeSelect
+                                    showTimeSelectOnly
+                                    timeIntervals={15}
+                                    timeCaption="Time"
+                                    dateFormat="h:mm aa"
                                     className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
                                 />
                             </div>
@@ -85,10 +98,14 @@ const AddTest = () => {
                                 <label className="font-medium" htmlFor="timeSlotTo">
                                     Available Time To
                                 </label>
-                                <input
-                                    id="timeSlotTo"
-                                    type="time"
-                                    required
+                                <DatePicker
+                                    selected={endTime}
+                                    onChange={(date) => setEndTime(date)}
+                                    showTimeSelect
+                                    showTimeSelectOnly
+                                    timeIntervals={15}
+                                    timeCaption="Time"
+                                    dateFormat="h:mm aa"
                                     className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
                                 />
                             </div>
@@ -144,8 +161,7 @@ const AddTest = () => {
                 </div>
             </div>
         </main>
-    )
-
+    );
 };
 
 export default AddTest;
