@@ -130,8 +130,8 @@ const ReservationTable = () => {
                     <thead className="bg-gray-50 text-gray-600 font-medium border-b">
                         <tr>
                             <th className="py-3 px-6"></th>
-                            <th className="py-3 px-6">Patient Name</th>
-                            <th className="py-3 px-6">Patient Email</th>
+                            <th className="py-3 px-6">Patient</th>
+                            <th className="py-3 px-6">Test Name</th>
                             <th className="py-3 px-6">Test Time </th>
                             <th className="py-3 px-6">Test Date </th>
                             <th className="py-3 px-6"></th>
@@ -147,9 +147,10 @@ const ReservationTable = () => {
                                         <img src={validator.isURL(item?.userPhoto) ? item?.userPhoto : 'https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg'} className="w-10 h-10 rounded-full" />
                                         <div>
                                             <span className="block text-gray-700 text-sm font-medium">{item?.userName}</span>
+                                            <span className="block text-gray-700 text-sm font-medium">{item?.userEmail}</span>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap space-x-3">{item?.userEmail}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap space-x-3">{item?.title}</td>
                                     <td className="px-6 py-4 whitespace-nowrap space-x-3">{item?.timeSlot}</td>
                                     <td className="px-6 py-4 whitespace-nowrap space-x-3">{item?.availableDate}</td>
                                     <td className="text-right px-6 whitespace-nowrap space-x-2">
