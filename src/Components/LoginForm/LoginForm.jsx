@@ -6,6 +6,7 @@ import Divider from '@mui/material/Divider';
 import toast from 'react-hot-toast';
 import { useContext } from 'react';
 import { AuthContext } from '../AuthProvider/AuthProvider';
+import axios from 'axios';
 
 const LoginForm = () => {
     const { logIn, dbUsers } = useContext(AuthContext)
@@ -20,6 +21,11 @@ const LoginForm = () => {
 
         logIn(userEmail, userPassword)
             .then(() => {
+                const user = { userEmail }
+                axios.post('http://localhost:4000/jwt', user, { withCredentials: true })
+                    .then(res => {
+                        console.log(res.data);
+                    })
                 toast.success("Login success")
                 const currentUser = dbUsers.filter(user => userEmail == user.userEmail)
                 const { role } = currentUser[0];

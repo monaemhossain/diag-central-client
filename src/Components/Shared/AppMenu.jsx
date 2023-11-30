@@ -13,7 +13,7 @@ import { NavLink } from 'react-router-dom';
 import Slide from '@mui/material/Slide';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { AuthContext } from '../AuthProvider/AuthProvider';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import DropDown from './DropDown';
 
 const drawerWidth = 280;
@@ -42,9 +42,20 @@ const navItems = [
 
 const AppMenu = (props) => {
   // user
-  const { user } = useContext(AuthContext)
+  const { user, dbUsers } = useContext(AuthContext)
+  const [currentUser, setCurrentUser] = useState([]);
+  useEffect(() => {
+    if (user) {
+      const loggedInUser = dbUsers.filter(item => item.userEmail === user?.email);
+      if (loggedInUser.length > 0) {
+        setCurrentUser(loggedInUser[0]);
+      }
+    }
+  }, [user, dbUsers]); // Add dependencies to the dependency array
 
-// console.log(user);
+  // console.log(currentUser);
+
+  // console.log(user);
 
   // Appbar scripts
 
@@ -56,7 +67,7 @@ const AppMenu = (props) => {
   };
   const appLogo = (<img className='h-14' src="/logo.png" alt="Diag Central Logo" />)
   const appBarMenu = (
-    <List sx={{display:{md:'flex'}, gap: 3, alignItems: 'center'}}>
+    <List sx={{ display: { md: 'flex' }, gap: 3, alignItems: 'center' }}>
       {
         navItems.map((item, index) => (
           <li key={index}>
@@ -73,6 +84,29 @@ const AppMenu = (props) => {
         ))
       }
 
+
+      {
+        user && currentUser?.role === 'user' ?
+          <NavLink
+            to='/user-dashboard'
+            className={`${({ isActive, isPending }) =>
+              isPending ? "pending" : isActive ? "active" : ""} py-2 px-2 text-black text-base border border-secondary hover:bg-secondary block rounded-md`}
+          >
+            Dashboard
+          </NavLink> : ''
+      }
+      {
+        user && currentUser?.role === 'admin' ?
+          <NavLink
+            to='/admin-dashboard'
+            className={`${({ isActive, isPending }) =>
+              isPending ? "pending" : isActive ? "active" : ""} py-2 px-2 text-black text-base border border-secondary hover:bg-secondary block rounded-md`}
+          >
+            Admin Dashboard
+          </NavLink> : ''
+      }
+
+
       {
         !user ?
           <li>
@@ -86,8 +120,8 @@ const AppMenu = (props) => {
             </NavLink>
           </li>
           : <DropDown />
-      }          
-      
+      }
+
     </List >
   )
 

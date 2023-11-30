@@ -32,17 +32,7 @@ const DropDown = () => {
           <div className="absolute z-10 top-12 right-0 w-64 rounded-lg bg-white shadow-md border">
             <div className="p-4 text-left grid gap-3">
 
-              <h2 className="text-defaultText text-lg text-center">Hello! {displayName}</h2>
-              {/* <span className="block text-gray-500/80 p-2">{email}</span> */}
-              <div>
-                <NavLink
-                  to='/user-dashboard'
-                  className={`${({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? "active" : ""} py-2 px-2 text-black text-base border border-secondary hover:bg-secondary block rounded-md`}
-                >
-                  Go to Dashboard
-                </NavLink>
-              </div>
+              <h2 className="text-defaultText text-lg text-center">Hello! {displayName}</h2>              
               {
                 user ? <Button
                   fullWidth
