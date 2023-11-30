@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Reservations from "../../Components/Reservations/Reservations";
 import AddBanner from "../../Components/AddBanner/AddBanner";
+import AllBanners from "../../Components/AllBanners/AllBanners";
 
 const AdminDashboard = () => {
     const { user, dbUsers } = useContext(AuthContext)
@@ -132,7 +133,7 @@ const AdminDashboard = () => {
                 </Tabs.Content>
 
                 <Tabs.Content className="py-6" value="Add a test">
-                    <AddTest></AddTest>
+                    <AddTest />
                 </Tabs.Content>
 
                 <Tabs.Content className="py-6" value="All Tests">
@@ -148,9 +149,7 @@ const AdminDashboard = () => {
                 </Tabs.Content>
 
                 <Tabs.Content className="py-6" value="All banners">
-                    <p className="text-xs leading-normal">
-                        This is <b>All Users6</b> Tab
-                    </p>
+                    <AllBanners />
                 </Tabs.Content>
 
             </div>

@@ -19,7 +19,7 @@ const AllTests = () => {
             .then(res => setTests(res.data))
     };
 
-
+// SEARCH TESTS
     const handleSearch = (e) => {
         e.preventDefault();
         const searchDate = e.target.searchInput.value

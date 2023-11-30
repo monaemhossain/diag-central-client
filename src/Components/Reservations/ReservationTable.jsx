@@ -202,7 +202,7 @@ const ReservationTable = () => {
                                     <td className="text-right px-6 whitespace-nowrap space-x-2">
 
 
-                                        {/* delete test */}
+                                        {/* cancel appointment */}
 
                                         <React.Fragment>
                                             <Button variant='contained' color='error' onClick={handleClickOpenCancel} >
