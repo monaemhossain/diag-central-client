@@ -15,6 +15,7 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { AuthContext } from '../AuthProvider/AuthProvider';
 import { useContext, useEffect, useState } from 'react';
 import DropDown from './DropDown';
+import axios from 'axios';
 
 const drawerWidth = 280;
 const navItems = [
@@ -42,19 +43,26 @@ const navItems = [
 
 const AppMenu = (props) => {
   // user
-  const { user, dbUsers } = useContext(AuthContext)
-  const [currentUser, setCurrentUser] = useState([]);
+  const { user } = useContext(AuthContext)
 
-  console.log(dbUsers);
+  // console.log(dbUsers);
+
+  const [dbUsers, setDbUsers] = useState([])
 
   useEffect(() => {
-    if (user) {
-      const loggedInUser = dbUsers.filter(item => item.userEmail === user?.email);
-      if (loggedInUser.length > 0) {
-        setCurrentUser(loggedInUser[0]);
-      }
-    }
-  }, [user, dbUsers]); 
+    axios.get('https://diag-central-server.vercel.app/users', { withCredentials: true })
+      .then((res) => {
+        if (user) {
+          const loggedInUser = res?.data?.filter(item => item.userEmail === user?.email);
+          if (loggedInUser.length > 0) {
+            setDbUsers(loggedInUser[0]);
+          }
+        }
+
+      })
+      .catch(err => console.log(err))
+
+  }, [user]);
 
   // console.log(currentUser);
 
@@ -89,7 +97,7 @@ const AppMenu = (props) => {
 
 
       {
-        user && currentUser?.role === 'user' ?
+        user && dbUsers?.role === 'user' ?
           <NavLink
             to='/user-dashboard'
             className={`${({ isActive, isPending }) =>
@@ -99,7 +107,7 @@ const AppMenu = (props) => {
           </NavLink> : ''
       }
       {
-        user && currentUser?.role === 'admin' ?
+        user && dbUsers?.role === 'admin' ?
           <NavLink
             to='/admin-dashboard'
             className={`${({ isActive, isPending }) =>

@@ -1,6 +1,6 @@
 
 import * as Tabs from "@radix-ui/react-tabs";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import AllUsers from '../../Components/AllUsers/AllUsers';
 import ManageAllTests from "../../Components/ManageAllTests/ManageAllTests";
 import AddTest from "../../Components/AddTest/AddTest";
@@ -10,23 +10,33 @@ import toast from "react-hot-toast";
 import Reservations from "../../Components/Reservations/Reservations";
 import AddBanner from "../../Components/AddBanner/AddBanner";
 import AllBanners from "../../Components/AllBanners/AllBanners";
+import axios from "axios";
 
 const AdminDashboard = () => {
-    const { user, dbUsers } = useContext(AuthContext)
-    const dbUser = dbUsers?.filter(item => user.email === item.userEmail)
+    const { user } = useContext(AuthContext)
     const [selectedTab, setSelectedTab] = useState("All Users");
-    const isAdmin = dbUser[0].role === 'admin'
     const navigate = useNavigate()
 
+    if (user) {
+        axios.get('https://diag-central-server.vercel.app/users', { withCredentials: true })
+            .then((res) => {
+                const loggedInUser = res?.data?.filter(item => item.userEmail === user.email);
+                const isAdmin = loggedInUser[0].role === 'admin'
+                // Redirect to '/' if the user is not an admin
+                if (!isAdmin) {
+                    toast.error('You do not have admin access');
+                    navigate('/');
+                }
+            })
+            .catch(err => console.log(err))
+
+    }
 
 
-    useEffect(() => {
-        // Redirect to '/' if the user is not an admin
-        if (!isAdmin) {
-            toast.error('You do not have admin access');
-            navigate('/');
-        }
-    }, [isAdmin, navigate]);
+
+
+
+
 
     return (
         <Tabs.Root

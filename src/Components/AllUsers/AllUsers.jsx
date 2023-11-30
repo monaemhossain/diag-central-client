@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../AuthProvider/AuthProvider";
+import { useState } from "react";
 import { Backdrop, Button, Fade, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
@@ -20,7 +19,10 @@ const style = {
     borderRadius: 4,
 };
 const AllUsers = () => {
-    const { dbUsers } = useContext(AuthContext)
+    // const { dbUsers } = useContext(AuthContext)
+    const [dbUsers, setDbUsers] = useState([])
+    axios.get('https://diag-central-server.vercel.app/users', {withCredentials: true})
+    .then(res => setDbUsers(res.data))
     // console.log(dbUsers);
     const [open, setOpen] = useState(false);
     const [userData, setUserData] = useState([])

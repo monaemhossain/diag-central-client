@@ -78,7 +78,6 @@ const LoginForm = () => {
                         size="small"
                         type='email'
                         required
-                        defaultValue='user2@user.com'
                     />
                 </FormControl>
                 <FormControl fullWidth>
@@ -88,7 +87,6 @@ const LoginForm = () => {
                         size="small"
                         type='password'
                         required
-                        defaultValue='User123'
                     />
                 </FormControl>
 
