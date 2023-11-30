@@ -10,6 +10,7 @@ const AllTests = () => {
             .then(res => setTests(res.data))
     }, [])
     // console.log(tests);
+    // search tests
     const handleSearch = (e) => {
         e.preventDefault();
         const searchInput = e.target.searchInput.value

@@ -30,7 +30,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 const ReservationTable = () => {
     const [reservations, setReservations] = useState([]);
-    const [test, setTest] = useState([])
+    const [submitTestResult, setSubmitTestResult] = useState([])
     const [appointmentId, setAppointmentIdId] = useState('')
 
     useEffect(() => {
@@ -43,20 +43,55 @@ const ReservationTable = () => {
 
 
 
-    const [openEdit, setOpenEdit] = useState(false);
-    const handleClickOpenEdit = async (id) => {
+    const [openSubmitReport, setOpenSubmitReport] = useState(false);
+    const handleClickOpenSubmitReport = async (id) => {
         await axios.get(`http://localhost:4000/appointments/${id}`)
-            .then(res => setTest(res.data))
+            .then(res => setSubmitTestResult(res.data))
             .catch(err => console.log(err))
-        setOpenEdit(true);
+        setOpenSubmitReport(true);
         setAppointmentIdId(id);
     };
     // console.log(times[0]);
 
     // edit and delete dialog open and close button function
     const handleCloseEdit = () => {
-        setOpenEdit(false);
+        setOpenSubmitReport(false);
     };
+
+    // handle search by email
+    const handleSearchEmail = (e) => {
+        e.preventDefault();
+        const searchInput = e.target.value;
+
+        try {
+            if (searchInput === '') {
+                axios.get(`http://localhost:4000/appointments`)
+                    .then(res => setReservations(res.data))
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+                axios.get(`http://localhost:4000/search/appointments/${searchInput}`)
+                    .then(res => setReservations(res.data))
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    };
+
+
+
+
+
 
     const [openCancel, setOpenCancel] = useState(false);
     const handleClickOpenCancel = () => {
@@ -65,12 +100,7 @@ const ReservationTable = () => {
     const handleCloseCancel = () => {
         setOpenCancel(false);
     };
-
-
-
-
-
-    // edit test
+    // Submit test
     const handleUpdateTest = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -89,22 +119,18 @@ const ReservationTable = () => {
         const price = form.price.value;
 
         const updatedData = { title, availableDate, timeSlot, image, description, availableSlot, price };
-
-        axios.put(`http://localhost:4000/appointments/result/${appointmentId}`, updatedData)
-            .then(() => {
-                axios.get('http://localhost:4000/appointments')
-                    .then(res => setReservations(res.data))
-                toast.success('Test Updated successfully')
-            })
-            .catch(err => console.log(err))
-        setOpenEdit(false)
+        console.log(appointmentId);
+        // axios.put(`http://localhost:4000/appointments/result/${appointmentId}`, updatedData)
+        //     .then(() => {
+        //         axios.get('http://localhost:4000/appointments')
+        //             .then(res => setReservations(res.data))
+        //         toast.success('Test Updated successfully')
+        //     })
+        //     .catch(err => console.log(err))
+        setOpenSubmitReport(false)
     }
-
-
-
     // cancel appointment
     const handleCancelAppointment = (e, id) => {
-        console.log(id);
         e.preventDefault();
         console.log(id);
         axios.delete(`http://localhost:4000/appointments/${id}`)
@@ -112,6 +138,7 @@ const ReservationTable = () => {
                 axios.get('http://localhost:4000/appointments')
                     .then(res => setReservations(res.data))
                     .catch((err) => console.log(err))
+                toast.error('Reservation canceled')
             });
         setOpenCancel(false)
     }
@@ -119,10 +146,29 @@ const ReservationTable = () => {
     return (
         <div className="max-w-screen-xl mx-auto px-4 md:px-8">
             <div className="items-start justify-between md:flex">
-                <div className="max-w-lg">
-                    <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
+                <div className="md:flex grid gap-2 w-full justify-center md:justify-between items-center">
+                    <h3 className="text-gray-800 text-xl font-bold sm:text-2xl text-center">
                         All Reservations
                     </h3>
+                    <form >
+                        <div className="relative flex">
+
+                            <input
+                                onChange={(e) => handleSearchEmail(e)}
+                                onKeyDown={handleKeyPress}
+                                id="searchInput"
+                                type="text"
+                                placeholder="Search Patient by email"
+                                className="w-full py-3 pl-3 pr-14 text-gray-500 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-primary"
+                            />
+                            <button className="">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" className="absolute rounded-md border-l mr-[1px] p-2 grid justify-center items-center top-0 bottom-0 w-16 h-12 my-auto right-0 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
@@ -180,13 +226,13 @@ const ReservationTable = () => {
                                         </React.Fragment>
 
                                         <React.Fragment>
-                                            <Button variant='contained' onClick={() => handleClickOpenEdit(item?._id)} >
+                                            <Button variant='contained' onClick={() => handleClickOpenSubmitReport(item?._id)} >
                                                 Submit Report
                                             </Button>
                                             <BootstrapDialog
                                                 onClose={handleCloseEdit}
                                                 aria-labelledby="customized-dialog-title"
-                                                open={openEdit}
+                                                open={openSubmitReport}
                                             >
                                                 <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
                                                     Submit Test Report
@@ -213,7 +259,7 @@ const ReservationTable = () => {
                                                                 <input
                                                                     id="title"
                                                                     type="text"
-                                                                    defaultValue={test.title}
+                                                                    defaultValue={submitTestResult.title}
                                                                     required
                                                                     className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"
                                                                 />
@@ -224,7 +270,7 @@ const ReservationTable = () => {
                                                                 </label>
                                                                 <br />
                                                                 <input
-                                                                    defaultValue={test.availableDate}
+                                                                    defaultValue={submitTestResult.availableDate}
                                                                     id="availableDate"
                                                                     type="date"
                                                                     required
@@ -239,7 +285,7 @@ const ReservationTable = () => {
                                                                 <label className="font-medium" htmlFor="description">
                                                                     Result description
                                                                 </label>
-                                                                <textarea defaultValue={test.description} required id="description" className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"></textarea>
+                                                                <textarea defaultValue={submitTestResult.description} required id="description" className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-primary shadow-sm rounded-lg"></textarea>
                                                             </div>
 
                                                             <div>
@@ -247,7 +293,7 @@ const ReservationTable = () => {
                                                                     Price
                                                                 </label>
                                                                 <input
-                                                                    defaultValue={test.price}
+                                                                    defaultValue={submitTestResult.price}
                                                                     id="price"
                                                                     type="number"
                                                                     required
