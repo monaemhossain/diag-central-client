@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "../Components/AuthProvider/AuthProvider";
 
 const axiosSecure = axios.create({
-    baseURL: 'http://localhost:4000'
+    baseURL: 'https://diag-central-server.vercel.app'
 })
 
 const useAxiosSecure = () => {

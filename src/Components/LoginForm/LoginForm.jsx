@@ -22,7 +22,7 @@ const LoginForm = () => {
         logIn(userEmail, userPassword)
             .then(() => {
                 const user = { userEmail }
-                axios.post('http://localhost:4000/jwt', user, { withCredentials: true })
+                axios.post('https://diag-central-server.vercel.app/jwt', user, { withCredentials: true })
                     .then(res => {
                         console.log(res.data);
                     })

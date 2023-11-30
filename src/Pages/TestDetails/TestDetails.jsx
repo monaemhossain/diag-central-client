@@ -16,9 +16,9 @@ const TestDetails = () => {
     
     const appointmentData = { availableDate, description, image, timeSlot, title, availableSlot, price, userName: user.displayName, userPhoto: user.photoURL, userEmail: user.email, status: 'pending' }
     const handleGetAppointment = (id) => {
-        axios.post('http://localhost:4000/appointments', appointmentData)
+        axios.post('https://diag-central-server.vercel.app/appointments', appointmentData)
             .then(() => {
-                axios.put(`http://localhost:4000/test/decrease/${id}`)
+                axios.put(`https://diag-central-server.vercel.app/test/decrease/${id}`)
                     .then(res => console.log(res))
                     .catch(err => console.log(err))
                 toast.success('Your appointment is booked')

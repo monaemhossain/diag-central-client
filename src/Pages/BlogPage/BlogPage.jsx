@@ -5,7 +5,7 @@ const BlogPage = () => {
     const [articles, setArticles] = useState([])
 
     useEffect(()=> {
-        axios.get('http://localhost:4000/blogs')
+        axios.get('https://diag-central-server.vercel.app/blogs')
         .then(res => setArticles(res.data))
     }, [])
 

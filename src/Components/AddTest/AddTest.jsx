@@ -32,7 +32,7 @@ const AddTest = () => {
         const testData = { title, availableDate, timeSlot, image, description, availableSlot, price };
 
         try {
-            const response = await axios.post('http://localhost:4000/tests', testData);
+            const response = await axios.post('https://diag-central-server.vercel.app/tests', testData);
             console.log(response.data);
             toast.success("Test Added");
         } catch (error) {

@@ -16,7 +16,7 @@ const AddBanner = () => {
 
         const bannerData = { name, imageUrl, title, description, couponCode, couponValue, isActive: false}
         // console.log(bannerData);
-        axios.post('http://localhost:4000/banners', bannerData)
+        axios.post('https://diag-central-server.vercel.app/banners', bannerData)
         .then(() => {
             toast.success('banner added successfully')
         })

@@ -9,7 +9,7 @@ const UserAppointments = () => {
     const [appointment, setAppointments] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:4000/appointments', { withCredentials: true })
+        axios.get('https://diag-central-server.vercel.app/appointments', { withCredentials: true })
             .then(res => setAppointments(res.data))
     }, [setAppointments])
     // console.log(appointment);
@@ -24,9 +24,9 @@ const UserAppointments = () => {
         }).then((result) => {
             
             if (result.isConfirmed) {
-                axios.delete(`http://localhost:4000/appointments/${id}`)
+                axios.delete(`https://diag-central-server.vercel.app/appointments/${id}`)
                     .then(() => {
-                        axios.get('http://localhost:4000/appointments', { withCredentials: true })
+                        axios.get('https://diag-central-server.vercel.app/appointments', { withCredentials: true })
                             .then(res => setAppointments(res.data))
                             .catch((err) => console.log(err))
 

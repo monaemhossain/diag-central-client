@@ -18,7 +18,7 @@ const DropDown = () => {
     
     logOut()
       .then(() => {
-        axios.post('http://localhost:4000/logout', {user: email}, { withCredentials: true })
+        axios.post('https://diag-central-server.vercel.app/logout', {user: email}, { withCredentials: true })
           .then(res => {
             console.log(res.data);
           })

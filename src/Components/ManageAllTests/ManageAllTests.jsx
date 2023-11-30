@@ -34,7 +34,7 @@ const ManageAllTests = () => {
     const [testId, setTestId] = useState('')
 
     useEffect(() => {
-        axios.get('http://localhost:4000/tests')
+        axios.get('https://diag-central-server.vercel.app/tests')
             .then(res => setTests(res.data))
     }, [])
     // console.log(tests);
@@ -46,7 +46,7 @@ const ManageAllTests = () => {
     // edit and delete dialog open and close button function
     const [openEdit, setOpenEdit] = useState(false);
     const handleClickOpenEdit = async (id) => {
-        await axios.get(`http://localhost:4000/test/${id}`)
+        await axios.get(`https://diag-central-server.vercel.app/test/${id}`)
             .then(res => setTest(res.data))
             .catch(err => console.log(err))
         setOpenEdit(true);
@@ -91,9 +91,9 @@ const ManageAllTests = () => {
         const updatedData = { title, availableDate, timeSlot, image, description, availableSlot, price };
         // console.log(testData);
         // console.log(testId);
-        axios.put(`http://localhost:4000/update/test/${testId}`, updatedData)
+        axios.put(`https://diag-central-server.vercel.app/update/test/${testId}`, updatedData)
             .then(() => {
-                axios.get('http://localhost:4000/tests')
+                axios.get('https://diag-central-server.vercel.app/tests')
                     .then(res => setTests(res.data))
                 toast.success('Test Updated successfully')
             })
@@ -107,9 +107,9 @@ const ManageAllTests = () => {
     const handleDeleteTest = (e, id) => {
         e.preventDefault();
         console.log(id);
-        axios.delete(`http://localhost:4000/test/${id}`)
+        axios.delete(`https://diag-central-server.vercel.app/test/${id}`)
             .then(() => {
-                axios.get('http://localhost:4000/tests')
+                axios.get('https://diag-central-server.vercel.app/tests')
                     .then(res => setTests(res.data))
                     .catch((err) => console.log(err))
             });

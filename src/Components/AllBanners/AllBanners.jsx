@@ -29,7 +29,7 @@ const AllBanners = () => {
     const [banners, setBanners] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:4000/banners')
+        axios.get('https://diag-central-server.vercel.app/banners')
             .then(res => setBanners(res.data))
     }, [])
     // console.log(reservations);
@@ -51,11 +51,11 @@ const AllBanners = () => {
         const newStatus = e.target.checked;
 
         try {
-            await axios.put('http://localhost:4000/banners/resetActive');
+            await axios.put('https://diag-central-server.vercel.app/banners/resetActive');
 
-            await axios.put(`http://localhost:4000/banners/update/${id}`, { isActive: newStatus })
+            await axios.put(`https://diag-central-server.vercel.app/banners/update/${id}`, { isActive: newStatus })
                 .then(() => {
-                    axios.get('http://localhost:4000/banners')
+                    axios.get('https://diag-central-server.vercel.app/banners')
                         .then(res => setBanners(res.data))
                 })
             setBanners((prevBanners) =>
@@ -71,9 +71,9 @@ const AllBanners = () => {
     // Delete banner
     const handleDeleteBanner = (e) => {
         e.preventDefault();
-        axios.delete(`http://localhost:4000/banners/${bannerId}`)
+        axios.delete(`https://diag-central-server.vercel.app/banners/${bannerId}`)
             .then(() => {
-                axios.get('http://localhost:4000/banners')
+                axios.get('https://diag-central-server.vercel.app/banners')
                     .then(res => setBanners(res.data))
                     .catch((err) => console.log(err))
                 toast.success('banner is deleted')

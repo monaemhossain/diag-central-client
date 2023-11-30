@@ -120,7 +120,7 @@ const SignUpForm = () => {
                             const userDetails = { userName, userEmail, userBloodGroup, userDistrict, userUpazila, imageUrl, activeStatus, role }
                             console.log(newUser);
                             // post user details to the server
-                            axios.post('http://localhost:4000/users', userDetails)
+                            axios.post('https://diag-central-server.vercel.app/users', userDetails)
                             .then((res) => {
                                 console.log(res.data)
                                 if (res.data.insertedId) {

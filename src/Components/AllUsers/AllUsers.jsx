@@ -39,7 +39,7 @@ const AllUsers = () => {
     const handleOpen = async (id) => {
         try {
             // Make the asynchronous API call
-            const response = await axios.get(`http://localhost:4000/user/${id}`);
+            const response = await axios.get(`https://diag-central-server.vercel.app/user/${id}`);
             setUserData(response.data);
             setUserRole(response.data.role);
             setStatus(response.data.activeStatus);
@@ -61,7 +61,7 @@ const AllUsers = () => {
         const updateData = { role, activeStatus }
 
 
-        axios.put(`http://localhost:4000/update/role/${_id}`, updateData)
+        axios.put(`https://diag-central-server.vercel.app/update/role/${_id}`, updateData)
             .then(() => {
                 toast.success('User updated');
             }).catch(err => console.log(err))

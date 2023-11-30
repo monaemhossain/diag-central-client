@@ -34,7 +34,7 @@ const ReservationTable = () => {
     const [appointmentId, setAppointmentIdId] = useState('')
 
     useEffect(() => {
-        axios.get('http://localhost:4000/appointments', { withCredentials: true })
+        axios.get('https://diag-central-server.vercel.app/appointments', { withCredentials: true })
             .then(res => setReservations(res.data))
     }, [])
     // console.log(reservations);
@@ -45,7 +45,7 @@ const ReservationTable = () => {
 
     const [openSubmitReport, setOpenSubmitReport] = useState(false);
     const handleClickOpenSubmitReport = async (id) => {
-        await axios.get(`http://localhost:4000/appointments/${id}`, { withCredentials: true })
+        await axios.get(`https://diag-central-server.vercel.app/appointments/${id}`, { withCredentials: true })
             .then(res => setSubmitTestResult(res.data))
             .catch(err => console.log(err))
         setOpenSubmitReport(true);
@@ -65,13 +65,13 @@ const ReservationTable = () => {
 
         try {
             if (searchInput === '') {
-                axios.get(`http://localhost:4000/appointments`, { withCredentials: true })
+                axios.get(`https://diag-central-server.vercel.app/appointments`, { withCredentials: true })
                     .then(res => setReservations(res.data))
                     .catch((err) => {
                         console.log(err);
                     });
             } else {
-                axios.get(`http://localhost:4000/search/appointments/${searchInput}`)
+                axios.get(`https://diag-central-server.vercel.app/search/appointments/${searchInput}`)
                     .then(res => setReservations(res.data))
                     .catch((err) => {
                         console.log(err);
@@ -120,9 +120,9 @@ const ReservationTable = () => {
 
         const updatedData = { title, availableDate, timeSlot, image, description, availableSlot, price };
         console.log(updatedData);
-        // axios.put(`http://localhost:4000/appointments/result/${appointmentId}`, updatedData)
+        // axios.put(`https://diag-central-server.vercel.app/appointments/result/${appointmentId}`, updatedData)
         //     .then(() => {
-        //         axios.get('http://localhost:4000/appointments', { withCredentials: true })
+        //         axios.get('https://diag-central-server.vercel.app/appointments', { withCredentials: true })
         //             .then(res => setReservations(res.data))
         //         toast.success('Result Updated successfully')
         //     })
@@ -133,9 +133,9 @@ const ReservationTable = () => {
     const handleCancelAppointment = (e, id) => {
         e.preventDefault();
         console.log(id);
-        axios.delete(`http://localhost:4000/appointments/${id}`)
+        axios.delete(`https://diag-central-server.vercel.app/appointments/${id}`)
             .then(() => {
-                axios.get('http://localhost:4000/appointments', { withCredentials: true })
+                axios.get('https://diag-central-server.vercel.app/appointments', { withCredentials: true })
                     .then(res => setReservations(res.data))
                     .catch((err) => console.log(err))
                 toast.error('Reservation canceled')

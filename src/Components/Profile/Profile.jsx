@@ -51,7 +51,7 @@ const Profile = () => {
             displayName: userName,
             photoURL: imageUrl,
         })
-        .then(() => axios.put(`http://localhost:4000/update/user/${dbUser[0]._id}`, updateData))
+        .then(() => axios.put(`https://diag-central-server.vercel.app/update/user/${dbUser[0]._id}`, updateData))
         .then(() => {
             toast.success('User profile updated successfully');
             setOpen(false);

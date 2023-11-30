@@ -6,7 +6,7 @@ import { Container } from "@mui/system";
 const AllTests = () => {
     const [tests, setTests] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:4000/tests')
+        axios.get('https://diag-central-server.vercel.app/tests')
             .then(res => setTests(res.data))
     }, [])
 
@@ -15,7 +15,7 @@ const AllTests = () => {
 
     const handleClearDate = () => {
         document.getElementById('searchInput').value = ""
-        axios.get('http://localhost:4000/tests')
+        axios.get('https://diag-central-server.vercel.app/tests')
             .then(res => setTests(res.data))
     };
 
@@ -24,10 +24,10 @@ const AllTests = () => {
         e.preventDefault();
         const searchDate = e.target.searchInput.value
         try {
-            axios.get(`http://localhost:4000/tests/${searchDate}`)
+            axios.get(`https://diag-central-server.vercel.app/tests/${searchDate}`)
                 .then(res => setTests(res.data))
                 .catch(() => {
-                    axios.get('http://localhost:4000/tests')
+                    axios.get('https://diag-central-server.vercel.app/tests')
                         .then(res => setTests(res.data))
                     console.log(tests);
                 })

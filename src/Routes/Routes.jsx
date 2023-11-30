@@ -48,7 +48,7 @@ const Routes = createBrowserRouter([
         path: '/test-details/:id',
         element: <PrivateRoute><TestDetails /></PrivateRoute>,
         loader: ({ params }) => {
-          return fetch(`http://localhost:4000/test/${params.id}`);
+          return fetch(`https://diag-central-server.vercel.app/test/${params.id}`);
         }
       },
       {

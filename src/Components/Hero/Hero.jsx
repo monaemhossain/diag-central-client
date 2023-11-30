@@ -6,7 +6,7 @@ const Hero = () => {
     const [dbBanner, setDbBanner] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/banners')
+        axios.get('https://diag-central-server.vercel.app/banners')
             .then((res) => {
                 setDbBanner(res.data)
             })

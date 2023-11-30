@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const Recommendation = () => {
     const [tests, setTests] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:4000/tests')
+        axios.get('https://diag-central-server.vercel.app/tests')
             .then(res => setTests(res.data))
     }, [])
 

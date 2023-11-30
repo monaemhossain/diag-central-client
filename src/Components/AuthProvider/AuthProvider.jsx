@@ -47,7 +47,7 @@ const AuthProvider = ({ children }) => {
         const fetchUserDatabase = async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.get('http://localhost:4000/users', { withCredentials: true });
+                const response = await axios.get('https://diag-central-server.vercel.app/users', { withCredentials: true });
                 setDbUsers(response.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
