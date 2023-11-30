@@ -8,6 +8,7 @@ import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Reservations from "../../Components/Reservations/Reservations";
+import AddBanner from "../../Components/AddBanner/AddBanner";
 
 const AdminDashboard = () => {
     const { user, dbUsers } = useContext(AuthContext)
@@ -143,9 +144,7 @@ const AdminDashboard = () => {
                 </Tabs.Content>
 
                 <Tabs.Content className="py-6" value="Add banner">
-                    <p className="text-xs leading-normal">
-                        This is <b>All Users5</b> Tab
-                    </p>
+                    <AddBanner />
                 </Tabs.Content>
 
                 <Tabs.Content className="py-6" value="All banners">
