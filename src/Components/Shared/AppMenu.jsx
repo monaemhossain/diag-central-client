@@ -44,6 +44,9 @@ const AppMenu = (props) => {
   // user
   const { user, dbUsers } = useContext(AuthContext)
   const [currentUser, setCurrentUser] = useState([]);
+
+  console.log(dbUsers);
+
   useEffect(() => {
     if (user) {
       const loggedInUser = dbUsers.filter(item => item.userEmail === user?.email);
@@ -51,7 +54,7 @@ const AppMenu = (props) => {
         setCurrentUser(loggedInUser[0]);
       }
     }
-  }, [user, dbUsers]); // Add dependencies to the dependency array
+  }, [user, dbUsers]); 
 
   // console.log(currentUser);
 

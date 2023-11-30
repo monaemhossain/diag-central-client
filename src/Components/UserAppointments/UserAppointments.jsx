@@ -9,7 +9,7 @@ const UserAppointments = () => {
     const [appointment, setAppointments] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:4000/appointments')
+        axios.get('http://localhost:4000/appointments', { withCredentials: true })
             .then(res => setAppointments(res.data))
     }, [setAppointments])
     // console.log(appointment);
@@ -26,7 +26,7 @@ const UserAppointments = () => {
             if (result.isConfirmed) {
                 axios.delete(`http://localhost:4000/appointments/${id}`)
                     .then(() => {
-                        axios.get('http://localhost:4000/appointments')
+                        axios.get('http://localhost:4000/appointments', { withCredentials: true })
                             .then(res => setAppointments(res.data))
                             .catch((err) => console.log(err))
 

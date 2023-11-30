@@ -41,16 +41,25 @@ const AuthProvider = ({ children }) => {
 
     }, [])
 
-    const [dbUsers, setDbUsers] = useState(null)
+    const [dbUsers, setDbUsers] = useState(null);
+
     useEffect(() => {
-        const userDatabase = () => {
-            setIsLoading(true);
-            axios.get('http://localhost:4000/users')
-                .then(res => setDbUsers(res.data))
-        }
-        return userDatabase;
-    }, [])
-    
+        const fetchUserDatabase = async () => {
+            try {
+                setIsLoading(true);
+                const response = await axios.get('http://localhost:4000/users', { withCredentials: true });
+                setDbUsers(response.data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchUserDatabase();
+    }, []);  
+
+
     const AuthInfo = {
         signUp,
         logIn,

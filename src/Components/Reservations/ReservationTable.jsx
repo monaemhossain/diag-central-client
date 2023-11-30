@@ -34,7 +34,7 @@ const ReservationTable = () => {
     const [appointmentId, setAppointmentIdId] = useState('')
 
     useEffect(() => {
-        axios.get('http://localhost:4000/appointments')
+        axios.get('http://localhost:4000/appointments', { withCredentials: true })
             .then(res => setReservations(res.data))
     }, [])
     // console.log(reservations);
@@ -45,7 +45,7 @@ const ReservationTable = () => {
 
     const [openSubmitReport, setOpenSubmitReport] = useState(false);
     const handleClickOpenSubmitReport = async (id) => {
-        await axios.get(`http://localhost:4000/appointments/${id}`)
+        await axios.get(`http://localhost:4000/appointments/${id}`, { withCredentials: true })
             .then(res => setSubmitTestResult(res.data))
             .catch(err => console.log(err))
         setOpenSubmitReport(true);
@@ -65,7 +65,7 @@ const ReservationTable = () => {
 
         try {
             if (searchInput === '') {
-                axios.get(`http://localhost:4000/appointments`)
+                axios.get(`http://localhost:4000/appointments`, { withCredentials: true })
                     .then(res => setReservations(res.data))
                     .catch((err) => {
                         console.log(err);
@@ -122,7 +122,7 @@ const ReservationTable = () => {
         console.log(updatedData);
         // axios.put(`http://localhost:4000/appointments/result/${appointmentId}`, updatedData)
         //     .then(() => {
-        //         axios.get('http://localhost:4000/appointments')
+        //         axios.get('http://localhost:4000/appointments', { withCredentials: true })
         //             .then(res => setReservations(res.data))
         //         toast.success('Result Updated successfully')
         //     })
@@ -135,7 +135,7 @@ const ReservationTable = () => {
         console.log(id);
         axios.delete(`http://localhost:4000/appointments/${id}`)
             .then(() => {
-                axios.get('http://localhost:4000/appointments')
+                axios.get('http://localhost:4000/appointments', { withCredentials: true })
                     .then(res => setReservations(res.data))
                     .catch((err) => console.log(err))
                 toast.error('Reservation canceled')

@@ -2,21 +2,29 @@ import { Avatar, Button } from "@mui/material";
 import { useContext, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../AuthProvider/AuthProvider";
+import axios from "axios";
 
 
 const DropDown = () => {
 
   const { user, logOut } = useContext(AuthContext)
   // console.log(user);
-  const { displayName, photoURL, } = user;
+  const { displayName, photoURL, email } = user;
   const profileRef = useRef()
   const [isProfileActive, setIsProfileActive] = useState(false)
 
-  
+
   const handleLogOut = () => {
+    
     logOut()
-      // .then(res => console.log(res))
-      // .catch(err => console.log(err))
+      .then(() => {
+        axios.post('http://localhost:4000/logout', {user: email}, { withCredentials: true })
+          .then(res => {
+            console.log(res.data);
+          })
+      })
+    // .then(res => console.log(res))
+    // .catch(err => console.log(err))
   }
 
 
@@ -32,7 +40,7 @@ const DropDown = () => {
           <div className="absolute z-10 top-12 right-0 w-64 rounded-lg bg-white shadow-md border">
             <div className="p-4 text-left grid gap-3">
 
-              <h2 className="text-defaultText text-lg text-center">Hello! {displayName}</h2>              
+              <h2 className="text-defaultText text-lg text-center">Hello! {displayName}</h2>
               {
                 user ? <Button
                   fullWidth

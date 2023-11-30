@@ -109,11 +109,9 @@ const AllBanners = () => {
                             banners?.map((item, idx) => (
                                 <tr key={idx}>
                                     <td className="text-center">{idx + 1}.</td>
-                                    <td className="flex items-center gap-x-3 py-3 whitespace-nowrap">
+                                    <td className="flex items-center gap-x-3 py-3 whitespace-nowrap justify-center">
                                         <img src={validator.isURL(item?.imageUrl) ? item?.imageUrl : 'https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg'} className="w-10 h-10 rounded-full" />
-                                        <div>
-                                            <span className="block text-gray-700 text-sm font-medium">{item?.name}</span>
-                                        </div>
+                                        
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap space-x-3">{item?.name}</td>
                                     <td className="px-6 py-4 whitespace-nowrap space-x-3">{item?.title}</td>
