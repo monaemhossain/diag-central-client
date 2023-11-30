@@ -94,8 +94,10 @@ const ReservationTable = () => {
 
 
     const [openCancel, setOpenCancel] = useState(false);
-    const handleClickOpenCancel = () => {
+    const [cancelId, setCancelId] =useState('')
+    const handleClickOpenCancel = (id) => {
         setOpenCancel(true);
+        setCancelId(id);
     };
     const handleCloseCancel = () => {
         setOpenCancel(false);
@@ -129,11 +131,14 @@ const ReservationTable = () => {
         //     .catch(err => console.log(err))
         setOpenSubmitReport(false)
     }
+
+
+
     // cancel appointment
-    const handleCancelAppointment = (e, id) => {
+    const handleCancelAppointment = (e) => {
         e.preventDefault();
-        console.log(id);
-        axios.delete(`https://diag-central-server.vercel.app/appointments/${id}`)
+        // console.log(cancelId);
+        axios.delete(`https://diag-central-server.vercel.app/appointments/${cancelId}`)
             .then(() => {
                 axios.get('https://diag-central-server.vercel.app/appointments', { withCredentials: true })
                     .then(res => setReservations(res.data))
@@ -205,7 +210,7 @@ const ReservationTable = () => {
                                         {/* cancel appointment */}
 
                                         <React.Fragment>
-                                            <Button variant='contained' color='error' onClick={handleClickOpenCancel} >
+                                            <Button variant='contained' color='error' onClick={()=>handleClickOpenCancel(item._id)} >
                                                 Cancel
                                             </Button>
                                             <BootstrapDialog
@@ -218,7 +223,7 @@ const ReservationTable = () => {
                                                 </DialogTitle>
                                                 <DialogActions sx={{ p: 2 }}>
                                                     <Button onClick={handleCloseCancel}>No</Button>
-                                                    <Button variant='contained' color='error' onClick={(e) => handleCancelAppointment(e, item._id)} autoFocus>
+                                                    <Button variant='contained' color='error' onClick={(e) => handleCancelAppointment(e)} autoFocus>
                                                         Yes!
                                                     </Button>
                                                 </DialogActions>
