@@ -10,6 +10,9 @@ import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
 import UserDashboard from "../Pages/Dashboard/UserDashboard";
 import AllTests from "../Pages/AllTests/AllTests";
 import TestDetails from "../Pages/TestDetails/TestDetails";
+import ContactPage from "../Pages/ContactPage/ContactPage";
+import BlogPage from "../Pages/BlogPage/BlogPage";
+import AboutUs from "../Pages/AboutPage/AboutPage";
 
 const Routes = createBrowserRouter([
   {
@@ -47,6 +50,18 @@ const Routes = createBrowserRouter([
         loader: ({ params }) => {
           return fetch(`http://localhost:4000/test/${params.id}`);
         }
+      },
+      {
+        path: '/blogs',
+        element: <BlogPage />
+      },
+      {
+        path: '/contact-us',
+        element: <ContactPage />
+      },
+      {
+        path: '/about-us',
+        element: <AboutUs />
       }
     ]
   },

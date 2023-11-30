@@ -119,12 +119,12 @@ const ReservationTable = () => {
         const price = form.price.value;
 
         const updatedData = { title, availableDate, timeSlot, image, description, availableSlot, price };
-        console.log(appointmentId);
+        console.log(updatedData);
         // axios.put(`http://localhost:4000/appointments/result/${appointmentId}`, updatedData)
         //     .then(() => {
         //         axios.get('http://localhost:4000/appointments')
         //             .then(res => setReservations(res.data))
-        //         toast.success('Test Updated successfully')
+        //         toast.success('Result Updated successfully')
         //     })
         //     .catch(err => console.log(err))
         setOpenSubmitReport(false)

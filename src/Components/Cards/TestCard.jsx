@@ -15,7 +15,7 @@ const TestCard = ({ test }) => {
 
             <article className="shadow-lg border rounded-md duration-300 hover:shadow-sm text-start min-h-[469px]">
                 <div onClick={() => handleDetails(_id)} className='flex flex-col h-60 justify-between'>
-                    <div>
+                    <div className='cursor-pointer'>
                         <div className="">
                             <img src={validator.isURL(image) ? image : "https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg"} loading="lazy" alt={title} className="w-full max-h-60 object-cover rounded-t-md" />
 

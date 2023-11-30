@@ -20,7 +20,7 @@ const Root = () => {
             <AppMenu />
             <Box className="min-h-[calc(100vh-152px)] pt-1.5">
                 <Outlet />
-
+                
             </Box>
             <Footer />
 

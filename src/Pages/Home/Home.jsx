@@ -1,5 +1,10 @@
 import { Helmet } from "react-helmet-async";
 import Hero from "../../Components/Hero/Hero";
+import Recommendation from "../../Components/Recommendation/Recommendation";
+import BlogPage from "../BlogPage/BlogPage";
+import ContactPage from "../ContactPage/ContactPage";
+import AboutPage from "../AboutPage/AboutPage";
+import FooterInfo from "../../Components/FooterInfo/FooterInfo";
 
 const Home = () => {
     return (
@@ -9,8 +14,11 @@ const Home = () => {
             </Helmet>
  
             <Hero />
-            
-            <div className="h-[100svh]"></div>           
+            <Recommendation />
+            <BlogPage />
+            <AboutPage />
+            <ContactPage />
+            <FooterInfo />
         </div>
     );
 };

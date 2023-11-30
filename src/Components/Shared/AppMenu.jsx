@@ -27,12 +27,16 @@ const navItems = [
     path: '/all-tests'
   },
   {
-    name: 'About',
-    path: '/about'
+    name: 'About us',
+    path: '/about-us'
+  },
+  {
+    name: 'Blogs',
+    path: '/Blogs'
   },
   {
     name: 'Contact',
-    path: '/contact'
+    path: '/contact-us'
   },
 ];
 
