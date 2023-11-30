@@ -33,7 +33,7 @@ const navItems = [
   },
   {
     name: 'Blogs',
-    path: '/Blogs'
+    path: '/blogs'
   },
   {
     name: 'Contact',
@@ -50,18 +50,20 @@ const AppMenu = (props) => {
   const [dbUsers, setDbUsers] = useState([])
 
   useEffect(() => {
-    axios.get('https://diag-central-server.vercel.app/users', { withCredentials: true })
-      .then((res) => {
-        if (user) {
-          const loggedInUser = res?.data?.filter(item => item.userEmail === user?.email);
-          if (loggedInUser.length > 0) {
-            setDbUsers(loggedInUser[0]);
+    async function fetchData() {
+      axios.get('https://diag-central-server.vercel.app/users', { withCredentials: true })
+        .then((res) => {
+          if (user) {
+            const loggedInUser = res?.data?.filter(item => item.userEmail === user?.email);
+            if (loggedInUser.length > 0) {
+              setDbUsers(loggedInUser[0]);
+            }
           }
-        }
 
-      })
-      .catch(err => console.log(err))
-
+        })
+        .catch(err => console.log(err))
+    }
+    fetchData()
   }, [user]);
 
   // console.log(currentUser);

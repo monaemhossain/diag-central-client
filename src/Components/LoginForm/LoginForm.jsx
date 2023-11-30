@@ -9,7 +9,7 @@ import { AuthContext } from '../AuthProvider/AuthProvider';
 import axios from 'axios';
 
 const LoginForm = () => {
-    const { logIn, dbUsers } = useContext(AuthContext)
+    const { logIn } = useContext(AuthContext)
     const navigate = useNavigate();
 
     // log in with email and password
@@ -23,19 +23,20 @@ const LoginForm = () => {
             .then(() => {
                 const user = { userEmail }
                 axios.post('https://diag-central-server.vercel.app/jwt', user, { withCredentials: true })
-                    .then(res => {
+                    .then((res) => {
                         console.log(res.data);
-                    })
-                toast.success("Login success")
-                const currentUser = dbUsers.filter(user => userEmail == user.userEmail)
-                const { role } = currentUser[0];
-            
-
-                   if(role === 'admin'){
-                        navigate('/admin-dashboard');                    
-                    }else if(role === 'user'){                    
-                        navigate('/user-dashboard');
-                    }
+                        axios.get('https://diag-central-server.vercel.app/users', { withCredentials: true })
+                            .then((res) => {
+                                const currentUser = res.data.filter(user => userEmail == user.userEmail)
+                                const { role } = currentUser[0];
+                                if (role === 'admin') {
+                                    navigate('/admin-dashboard');
+                                } else if (role === 'user') {
+                                    navigate('/user-dashboard');
+                                }
+                            })
+                        toast.success("Login success")
+                    }).catch(err => console.log(err))
 
             })
             .catch((err) => {
